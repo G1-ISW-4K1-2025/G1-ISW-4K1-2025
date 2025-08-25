@@ -4,10 +4,10 @@
 Este repositorio reúne los **trabajos prácticos** desarrollados a lo largo de la cursada de la materia *Ingeniería y Calidad de Software*.  
 
 ## Estructura
-- `trabajos-grupales/X` → Carpeta con los trabajos grupales a desarrollar en la materia.
-- `materiar_de_estudio/` → Material de estudio para parciales.
-- `docs/` → Documentación y archivos de configuración del repositorio.
-- `lineas-base/` → ?? o tags
+- `trabajos-grupales/*` → Carpeta con los trabajos grupales a desarrollar en la materia.
+- `materiar_de_estudio/*` → Material de estudio para parciales.
+- `docs/*` → Documentación y archivos de configuración del repositorio.
+- `lineas-base/*` → ?? o tags
 
 ## Integrantes
 - Alvarez Polo, Xiomara 94571
