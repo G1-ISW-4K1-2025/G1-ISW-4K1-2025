@@ -18,31 +18,57 @@ Este es el repositorio de la materia *Ingeniería y Calidad de Software* pertene
 | Zamboni, Camila          | 96055 
 
 ## Estructura del Repositorio
-- g1-isw-4k1-2025
+- G1-ISW-4K1-2025
   - Materiales de Estudio
     - Presentaciones
       - Parcial 1
       - Parcial 2 
-    - Bibliografia 
+    - Bibliografia
+    - Templates
+    - Guías 
   - Documentos
   - Trabajos Grupales
     - Practicos
-      - TP1
-      - TP2
-      - TPN 
+      - TP 01
+      - TP 02
+      - TP &lt;NN&gt;
     - De Investigacion
-      - TI1
-      - TI2 
+      - TI 1
+      - TI 2 
 
 ## Listado de Ítems de Configuración
-- `trabajos-grupales/*` → Carpeta con los trabajos grupales a desarrollar en la materia.
-- `material_de_estudio/*` → Material de estudio para parciales.
-- `docs/*` → Documentación de la materia y archivos de configuración del repositorio.
-- `lineas-base/*` → ?? o tags
-
+| Nombre del Ítem de Configuración | Regla de Nombrado | Ubicación Física en el Repositorio
+|------------------------- |-------- | ----------
+| Bibliografía | Biblio_&lt;NN&gt;_&lt;TemaBiblio&gt; _&lt;Nombre&gt;.pdf | /Material de Estudio/Bibliografía
+| Presentaciones | PPT_&lt;NN&gt;_&lt;TemaPPT&gt;.pdf | /Material de Estudio/Presentaciones/Parcial &lt;N&gt;
+| Modalidad Académica | MA_&lt;Año&gt;.pdf | /Documentos
+| Presentación de la Materia | PM_&lt;NombreMateria&gt;_&lt;Año&gt;.pdf | /Documentos
+| Templates | TE_&lt;NombreTemplate>.&lt;ext&gt; | /Material de Estudio/Templates
+| Guías | Guía_&lt;NombreGuía&gt;.pdf | /Material de Estudio/Guías
+| Enunciados de Trabajos Grupales Prácticos | Enunciado_TP_&lt;NN&gt;.pdf | /Trabajos Grupales/Practicos/TP &lt;NN&gt;
+| Entrega de Trabajos Grupales Prácticos | Entrega_TP_&lt;NN&gt;.pdf | /Trabajos Grupales/Practicos/TP <NN&gt;
 
 ## Glosario
-
+| Siglas | Descripción
+|------- | -----------
+| &lt;NN&gt; | Número de ítem
+| &lt;TemaBiblio&gt; | Tema del libro, como aparece en el Aula Virtual
+| &lt;TemaPPT&gt; | Tema de clase dado, como aparece en el Aula Virtual
+| &lt;Nombre&gt; | Título del libro
+| &lt;Año&gt; | Año lectivo
+| &lt;NombreMateria&gt; | Nombre correspondiente a la materia 
+| &lt;NombreTemplate&gt; | Nombre del template que indica para que se utilizará
+| &lt;ext&gt; | Nombre de la extensión de un archivo identificados como: xlsx, docx.
+| &lt;NombreGuía&gt; | Nombre de la guía, como aparece en el Aula Virtual
 
 ## Criterio de línea base
+La línea base se fijará después de la corrección de cada Trabajo Grupal entregado.
+Se eligió este momento porque nos permite tomar como referencia el trabajo ya revisado, con las correcciones y sugerencias que nos indicaron las docentes. De esta manera, nuestra línea base refleja de forma clara y estable nuestro trabajo en la materia.
+
+En el repositorio, cada línea base se va a guardar en la rama main con un tag con el formato: 
+&lt;TrabajoPracticoCorregido&gt;_LB _&lt;NN&gt;
+
+- &lt;TrabajoPracticoCorregido&gt;: El nombre de la línea base se identificará con el trabajo práctico corregido correspondiente a la línea base.
+- LB: indica que se trata de una línea base.
+- &lt;NN&gt;: Número de versión de la línea base.
 
