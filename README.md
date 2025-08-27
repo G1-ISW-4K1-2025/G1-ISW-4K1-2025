@@ -21,6 +21,8 @@ Este es el repositorio de la materia *Ingeniería y Calidad de Software* pertene
 - g1-isw-4k1-2025
   - Materiales de Estudio
     - Presentaciones
+      - Parcial 1
+      - Parcial 2 
     - Bibliografia 
   - Documentos
   - Trabajos Grupales
