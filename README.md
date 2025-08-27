@@ -6,7 +6,7 @@ Este repositorio reúne los **trabajos prácticos** desarrollados a lo largo de 
 ## Estructura
 - `trabajos-grupales/*` → Carpeta con los trabajos grupales a desarrollar en la materia.
 - `material_de_estudio/*` → Material de estudio para parciales.
-- `docs/*` → Documentación y archivos de configuración del repositorio.
+- `docs/*` → Documentación de la materia y archivos de configuración del repositorio.
 - `lineas-base/*` → ?? o tags
 
 ## Integrantes
