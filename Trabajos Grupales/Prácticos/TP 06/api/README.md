@@ -26,6 +26,10 @@
 
     python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 
+**Desactivar entorno virtual en terminal**
+
+    deactivate
+
 ## Endpoints
 
 - `GET /` → saludo JSON
