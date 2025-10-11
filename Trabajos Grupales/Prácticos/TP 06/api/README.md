@@ -6,13 +6,13 @@
 
 **Ir a la carpeta del proyecto**
 
-cd "G1-ISW-4K1-2025/Trabajos Grupales/Prácticos/TP 06/api
+    cd "G1-ISW-4K1-2025/Trabajos Grupales/Prácticos/TP 06/api
 
 **Crear y activar entorno virtual** (ejecutar estos 2 comandos)
 
-python3 -m venv .venv
+    python3 -m venv .venv
 
-source .venv/bin/activate
+    source .venv/bin/activate
 
 **Instalar dependencias**
 
