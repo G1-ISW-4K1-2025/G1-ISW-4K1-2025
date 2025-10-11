@@ -6,7 +6,7 @@ Este es el repositorio de la materia *Ingeniería y Calidad de Software* pertene
 ## Integrantes
 |Apellido y Nombre         | Legajo
 |------------------------- |--------
-|Alvarez Polo, Xiomara     |94571
+| Alvarez Polo, Xiomara     |94571
 | Azañero, Valeria Sofía   | 94614
 | Bermudez, Valentina      | 95002
 | Ceballos, Juan Cruz      | 94239
@@ -15,7 +15,7 @@ Este es el repositorio de la materia *Ingeniería y Calidad de Software* pertene
 | Issetta Recio, Florencia | 95316
 | Stanglino, Santiago      | 98577
 | Witt, Facundo Jeremías   | 97848
-| Zamboni, Camila          | 96055 
+| Zamboni, Camila          | 96055
 
 ## Estructura del Repositorio
 - G1-ISW-4K1-2025
@@ -34,7 +34,16 @@ Este es el repositorio de la materia *Ingeniería y Calidad de Software* pertene
       - TP &lt;NN&gt;
     - De Investigacion
       - TI 1
-      - TI 2 
+      - TI 2
+  - Trabajos Individuales
+    - Notas de clase
+      - Nota_01_Ciclos de vida_Witt.txt
+      - Nota_02_Gestión de producto_Ceballos.txt
+    - Resoluciones de TPs
+      - Res_E_01_Estrada.pdf
+      - Res_E_02_Stanglino.txt
+      - Res_R_01_Ceballos.txt
+      - Res_R_01_Estrada.txt
 
 ## Listado de Ítems de Configuración
 | Nombre del Ítem de Configuración | Regla de Nombrado | Ubicación Física en el Repositorio
@@ -47,6 +56,8 @@ Este es el repositorio de la materia *Ingeniería y Calidad de Software* pertene
 | Guías | Guía_&lt;NombreGuía&gt;.pdf | /Material de Estudio/Guías
 | Enunciados de Trabajos Grupales Prácticos | Enunciado_TP_&lt;NN&gt;.pdf | /Trabajos Grupales/Practicos/TP &lt;NN&gt;
 | Entrega de Trabajos Grupales Prácticos | Entrega_TP_&lt;NN&gt;.pdf | /Trabajos Grupales/Practicos/TP <NN&gt;
+| Notas de clase | Nota_&lt;N Unidad&gt;_ &lt;Tema&gt;_&lt;Apellido&gt;.txt | /Trabajos individuales/Notas de clase
+| Resoluciones de TPs | Res_&lt;NN&gt;_ &lt;Apellido&gt;.&lt;ext&gt; | /Trabajos individuales/Resoluciones de TPs
 
 ## Glosario
 | Siglas | Descripción
@@ -56,10 +67,14 @@ Este es el repositorio de la materia *Ingeniería y Calidad de Software* pertene
 | &lt;TemaPPT&gt; | Tema de clase dado, como aparece en el Aula Virtual
 | &lt;Nombre&gt; | Título del libro
 | &lt;Año&gt; | Año lectivo
-| &lt;NombreMateria&gt; | Nombre correspondiente a la materia 
+| &lt;NombreMateria&gt; | Nombre correspondiente a la materia
 | &lt;NombreTemplate&gt; | Nombre del template que indica para que se utilizará
 | &lt;ext&gt; | Nombre de la extensión de un archivo identificados como: xlsx, docx.
 | &lt;NombreGuía&gt; | Nombre de la guía, como aparece en el Aula Virtual
+| &lt;Apellido&gt; | Apellido del integrante del grupo que tomo las notas
+| &lt;Tema&gt; | Título o nombre orientativo que indica el contenido de las notas
+| &lt;N Unidad&gt; | Número de la unidad de la materia a la que pertenece el contenido
+
 
 ## Criterio de línea base
 La línea base se fijará después de la corrección de cada Trabajo Grupal entregado.
