@@ -12,7 +12,9 @@
 
     python3 -m venv .venv
 
-    source .venv/bin/activate
+    source .venv/bin/activate (en linux)
+    
+    source .venv/Scripts/activate (en windows)
 
 **Instalar dependencias**
 
