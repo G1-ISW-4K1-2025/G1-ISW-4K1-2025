@@ -1,0 +1,89 @@
+
+lo que hace agil a alguien no es el "hacer la daily", es el pensamiento, es la aplicacion de los fundamentos y los principios del manifiesto
+es una filosofia
+
+
+Velar para que el alcance lo defina el cliente SIEMPRE, el sabe lo que quiere y necesita
+
+El alcance es todo lo que define el cliente que quiere o necesita
+Nosotros, somos los encargados que tanto de ese alcance se tendra e cuenta para realizar el trabajo
+Nosotros sabemos de que somos capaces.
+
+Como gestionamos la iteracion
+	Tiempo variable - Alcance fijo
+	Iteracion con duracion fija - Negociar alcance (como pretende scrum)
+
+
+--------------------------------------------------
+
+TEMA - Es un agrupador, puede tener dentro, epica, user stories, incluso pipelines
+
+el timebox define una duracion MAXIMA, si una "tarea" (tarea por decir algo, no me refiero al uso formal de las diapos)
+dura menos que el timebox, es decir se llega al objetivo entonces se corta, no nos quedamos mirandonos la cara
+
+--------------------------------------------------
+
+la triple restriccion es un concepto, se aplica a todos los niveles, no solo a una iteracion (<- por ejemplo)
+	CALIDAD nunca deberia ser una variable al estilo de la triple restriccion
+	Considerarse hecho, es que cumpla con los criterios de calidad
+
+--------------------------------------------------
+
+USER STORIES CANONICAS - como elegirlas? 
+NO tiene incertidumbre
+Esfuerzo minimo
+"Esta US tiene 1 punto para mi, porque..." escribir esas consideraciones
+
+--------------------------------------------------
+ALCANCE DE PRODUCTO vs ALCANCE DE PROYECTO
+
+ALCANCE DE PRODUCTO
+	Que es lo que le vamos a entregar a nuestro cliente
+	EN LA TRADICIONAL
+		PUD -> Ciclo iterativo incremental...
+		ERS - Objetivo - Alcance - Requerimientos(NO necesariamente todos, recordar que podemos aplicar ciclo iterativo incremental)
+		- "Objetivo: Gestionar la actividad academica de los estudiantes y profesores de la universidad..."
+	EN  EL AGILISMO
+		PARTIMOS DE UNA VISION DE PRODUCTO - PRODUCT BACKLOG 
+		En general solemos tener primero el product backlog
+		AGILISMO PROMUEVE COMENZAR SIN TENER ABSOLUTAMENTE TODO DEFINIDO 
+	El alcance del producto son categorias
+ ^	
+/ \	
+ | el resultado del proyecto debe ser unico	
+ |
+ALCANCE DEL PROYECTO
+	DEbe cumplir con un objetivo
+	EL objetivo va a estar relacinoado con el producto - es distinto, pero esta relacionado
+		- "Desarrollar el producto de autogestion ..." - fijarse que genera incrementos del producto
+		- "Especificar los requerimientos producto de autogestion..." -  el alcance del producto no cambia, pero el desarrollo si, util
+	El alcance se define como todo el trabajo y solo el trabajo que se debe realizar para cumplir con el ojbetivo del PROYECTO
+	El alcance del proyecto se define por tareas.
+		L Gestionar
+		L Rg's
+		L Diseño
+		L Programacion 
+		L ...
+	
+	
+----------------------------------------------------
+
+TIPOS DE CICLO DE VIDA
+- SECUENCIAL -> ciclos de vida: CASCADA CLASICO, CASCADA VARIANTES
+- ITERATIVO  -> ciclos de vida: Iterativo incremental propuesto por SCRUM, iterativo incremental propuesto por PUD (son distintos)
+- RECURSIVO  -> ciclos de vida: Espiral
+
+CICLO DE VIDA DEL PROYECTO = MODELO DE PROCESO (sinonimos)
+	
+----------------------------------------------------
+
+En ingeniería de software, un "spike" (o "pico") es una tarea de investigación de tiempo limitado
+que realiza un equipo ágil para reducir la incertidumbre y obtener la información necesaria sobre un problema complejo
+antes de comprometerse con el desarrollo de una solución. 
+
+-----------------------------------------------------
+
+
+
+
+

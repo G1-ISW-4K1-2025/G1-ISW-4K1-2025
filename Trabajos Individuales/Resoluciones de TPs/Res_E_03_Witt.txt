@@ -1,0 +1,57 @@
+TP3 - Recircula tus prendas - US - Estimaciones
+
+US a trabajar
+- Seleccionar prenda para publicar
+
+Descripcion de la US completa
+Con estimacion incluida
+
+Frase Verbal
+	- Seleccionar prenda para publicar
+
+Descripcion
+	- Yo como analista de seleccion quiero poder seleccionar una
+	prenda de las propuestas por los vendedores para garantizar que los productos	
+	que esten en marketplace cumplan los estandares de calidad.
+
+Criterios de aceptacion: 
+	- Se debe completar la ficha basica del producto indicando categoria, marca, si esta seleccionada o no.
+	- Se debe asignar el estado de la prenda seleccionada.
+	- Se debe asignar un motivo de p or que la prenda son de segunda seleccion.
+	- Se debe indicar el motivo de por que una prenda no fue seleccionada.
+	- Se debe generar un codigo QR con codigo unico para la prenda.
+	- Se debe mostrar el formulario completado por el vendedor que muestra sus datos y los de la prenda.
+	- Se deben ver el conjunto de prendas que aun no fueron analizadas.
+	- Se debe visualizar la descripcion de cada prenda cargada.
+	- Se pueden ver las fotografias de la prenda.
+	- Se debe informar al vendedor de la prenda que no fue seleccionada.
+	- Se debe informar el motivo por el cual la prenda no fue seleccionada.
+	- Se debe registrar la decision del vendedor con respecto a su prenda no seleccionada (Retirar o Donar).
+
+Pruebas de usuario:
+	- Probar seleccionar una prenda de un vendedor que no fue autorizado (No pasa)
+	- Probar buscar los datos de un vendedor registrado que completo el formulario (Pasa)
+	- Probar seleccionar una prenda sin asignarle un estado (NO pasa)
+	- Probar visualizar la descripcion de una prenda
+	- Probar generar un QR para una prenda (Pasa)
+	- Probar seleccionar una prenda de segunda seleccion sin indicar motivos del estado (No pasa)
+	- Probar seleccionar una prenda con un dato faltante en su formulario(No pasa) -- esto resume los de arriba, ya que sino es muy redundante
+	- Probar registrar la decision del vendedor de las prendas no seleccionadas(Pasa)
+	... podemos seguir, pero vamos con la estimacion
+
+Estimacion canonica
+Registrar un tipo de estado para las prendas
+	- Nivel de incertidumbre: Muy Baja
+	- Esfuerzo: Bajo
+	- Complejidad: Baja
+	- STORIE POINT: 1
+
+En base a la historia de usuario canonica (Registrar tipo de estado para las prendas) con 1 SP, 
+Seleccionar prenda para publicar tiene 3 Storie points
+	- Nivel de incertidumbre: Bajo
+	- Esfuerzo: Medio
+	- Complejidad: Baja 
+	- STORIE POINT: 3
+
+
+

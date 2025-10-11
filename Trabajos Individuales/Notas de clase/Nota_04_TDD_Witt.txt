@@ -1,0 +1,83 @@
+TDD - Test Driven Development 
+
+diapo 1 --------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	Test - Fail (RED) - OK(GREEN) - Refactor(BLUE)
+
+	NO es testing, es desarrollo guiado por pruebas
+
+diapo 2 --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Directamente relacionado a una decision cultural
+	ACTIVIDADES PARA PUD
+	- Esp requerimiento
+	- Analisis		} 
+	- Diseño			}
+	- Implementacion		-> Entre 33% a 35% del costo total del proyecto (horas)
+	- Testing / Prueba 	-> Entre el 30% y el 50% del costo total del proyecto (horas). La mas costosa en terminos de esfuerzo (Actividad humano intensiva)
+	- Despliegue
+
+	ANTES -> testear luego de tener todo listo
+	AHORA -> De forma anticipada planificar, diseñar casos de prueba
+
+	Que es un caso de prueba: 
+		Es la identificacion de situaciones concretas mas los datos de seteo necesarios
+		para poder determinar si uno o mas criterios de aceptacion se cumplen o no para este software. 
+		SETEAR -> precondiciones
+
+diapo 3 --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Falta mucha cultura de testing en las organizaciones
+	Creen que es perdida de tiempo
+
+	Si los casos de prueba se crean en base a los requerimientos, ¿por que no hacerlo antes?
+
+	se empezo a proponer la idea de adelantar trabajo del testing.
+	Es importante saber como vamos a probar el software que vamos a construir
+
+	Con el agilismo se busca adelantar todo lo que se pueda el pensamiento del testing
+	ya cuando llegue la hora del testing, lo unico que queda es lo mas operativo
+
+diapo 4 --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Jerarquia de pruebas 4 niveles - En todos los niveles se busca la Validacion y Verificacion de los RNF y RF
+
+   	   /\ <- UAT (USER Aceptance Test) La tiene que hacer el usario | en despliegue
+	  /__\ <- Prueba de sistema o version  		| en pruebas
+ 	 /____\ <- Prueba de integracion -> build 	| en pruebas
+	/______\ <- Prueba unitaria 			| en implementacion
+
+diapo 5 --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	que es tdd - tecnica
+
+diapo 6 --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	beneficios de por que es bueno utilizar tdd como herramienta para crear codigo
+
+diapo 7 --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	red 	- El primer test debe fallar asi da oportunidades de mejoras
+	green 	- 
+	blue 	- refactor
+
+	no escribir una linea de codigo hasta que no se haya escrito un test que falle
+	con un solo test que falle es suficiente para comenzar el ciclo de mejora
+
+diapo 11 --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Refactoring
+	Forma de desarrollar que apunta a mejorar la calidad interna del componente que se construyo
+	- no cambiamos la funcionalidad, solo mejoramos la forma en la que lo hace.
+	- Hacer mas eficiente, reducir acoplamiento, aumentar cohesion
+
+diapo 12 --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	
+	
+
+
+
+
+
+

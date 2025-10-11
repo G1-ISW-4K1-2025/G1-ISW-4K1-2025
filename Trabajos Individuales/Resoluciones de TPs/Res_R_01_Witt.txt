@@ -1,0 +1,70 @@
+TRABAJOS PRACTICOS RESUELTOS
+
+Ejercicio 1 : Festival de folklore
+
+- Registrar grupo de folklore
+- Registrar festival
+- Diagramar noche para un festival (Contiene logica de los grupos de folklore por noche)
+
+- Registrar venta de entrada
+- Asignar butaca (es un cambio de estado, puede estar embebido en registrar venta de entrada)
+- Registrar reserva de butacas
+
+- Registrar butacas disponibles para cada noche
+- Consultar butacas disponibles
+- Consultar planificacion del festival / noches
+- Registrar tipo de entrada
+- Registrar punto de venta
+- Registrar zona de escenario
+- Definir porcentaje de descuento a entradas de venta anticipadas
+- Anular entrada (Deberia calcular el reintegro)
+- Consultar resumen de estadisticas (Porcentaje de ocupacion de butacas por noche, cantidad de entradas devueltas)
+- Generar codigo de barra para una entrada
+- Generar entrada
+- Validar entrada
+- 
+
+
+MVP 
+
+H0: 	Existen personas dispuestas a utilizar un sistema para planificar y administrar un festival de folklore,
+	gestionar la venta de entradas de los mismos y consultar estadisticas del mismo para la toma de decision de proximas organizaciones.
+
+User stories asociadas al MVP
+
+- Consultar diagramacion del festival		J: 
+- Consultar diagramacion de noche (INCLUYE VER BUTACAS)		J: 
+- Diagramar noche para un festival		J: 
+- Reservar butaca a una venta relacionada	J: 
+- Consultar resumen de estadisticas 		J: 
+- Registrar venta de entrada			J: Es fundamental para el core del negocio, sin el registro de las ventas de entradas, el sist no aporta valor al negocio
+- Generar entrada				J: 
+- Validar entrada				J: 
+
+
+NO INCLUYE:
+	- Anulacino de entrada	J: El sistema simplemente mueve una bandera de "disponible" en las butacas, no hay logica adicional, es solo un boton
+	- Registro de puntos de venta, y grupos de folklore, estos estaran cargados estaticamente en el sistema
+	- ... 
+
+
+US COMPLETA ----------------------------
+
+DESCRIPCION: Diagramar un festival
+
+FRASE VERBAL: 
+	Yo como responsable de organizacion quiero diagramar la distribucion de los grupos de folklore
+	que tocaran durante cada noche que compone un festival para planificar el festival efectivamente
+	(Sin huecos, sin grupos repetidos, y sin superposicion). 
+
+CRITERIOS DE ACEPTACION:
+	- Se debe asignar los grupos musicales a horarios sin superposicion.
+	- Se debe diagramar una noche de festival sin repeticion de grupos musicales dentro de la misma noche.
+	- Se debe impedir que hayan espacios sin presentaciones entre 2 grupos musicales // cambiar todos a positivo, para facilitar las pruebas de usuario
+	- Se debe definir una hora de inicio para la noche del festival
+	- Se puede dejar la diagramacion incompleta (Para poder asignar de a uno)
+	- 
+
+
+
+

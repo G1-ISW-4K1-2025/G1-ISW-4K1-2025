@@ -57,7 +57,7 @@ Este es el repositorio de la materia *Ingeniería y Calidad de Software* pertene
 | Enunciados de Trabajos Grupales Prácticos | Enunciado_TP_&lt;NN&gt;.pdf | /Trabajos Grupales/Practicos/TP &lt;NN&gt;
 | Entrega de Trabajos Grupales Prácticos | Entrega_TP_&lt;NN&gt;.pdf | /Trabajos Grupales/Practicos/TP <NN&gt;
 | Notas de clase | Nota_&lt;N Unidad&gt;_ &lt;Tema&gt;_&lt;Apellido&gt;.txt | /Trabajos individuales/Notas de clase
-| Resoluciones de TPs | Res_&lt;NN&gt;_ &lt;Apellido&gt;.&lt;ext&gt; | /Trabajos individuales/Resoluciones de TPs
+| Resoluciones de TPs | Res_&lt;Tipo TP&gt;_ &lt;NN&gt;_ &lt;Apellido&gt;.&lt;ext&gt; | /Trabajos individuales/Resoluciones de TPs
 
 ## Glosario
 | Siglas | Descripción
@@ -74,7 +74,7 @@ Este es el repositorio de la materia *Ingeniería y Calidad de Software* pertene
 | &lt;Apellido&gt; | Apellido del integrante del grupo que tomo las notas
 | &lt;Tema&gt; | Título o nombre orientativo que indica el contenido de las notas
 | &lt;N Unidad&gt; | Número de la unidad de la materia a la que pertenece el contenido
-
+| &lt;Tipo TP&gt; | E para los TPs evaluables, R para los TPs resueltos
 
 ## Criterio de línea base
 La línea base se fijará después de la corrección de cada Trabajo Grupal entregado.

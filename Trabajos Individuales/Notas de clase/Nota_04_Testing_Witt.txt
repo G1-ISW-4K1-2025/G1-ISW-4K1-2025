@@ -1,0 +1,124 @@
+07-10-2025
+El testing tiene una especie de connotacion negativa
+
+Prueba o testing
+Etapas (Actividades del proceso de testing)
+  - Planificacion -> Artefacto obtenido: Plan de prueba
+  - Diseño	  -> Artefacto obtenido: Casos de prueba != a Pruebas de usuario (estos ultimos son escenarios)
+  - Ejecucion	  -> Hace uso de la version obtenida por la actividad anterior al testing (implementacion)
+			Artefacto: Reporte de defectos (de alguna manera vuelve a la implementacion hasta que el producto tenga el nivel de calidad encesario)
+  - Cierre	  -> 
+
+Lo que se puede adelantar (la planificacion y el diseño)
+
+La planificacion y el diseño es el 50% del esfuerzo del testing, que no requieren de una version funcional del producto.
+
+A partir de la captura de requerimientos podemos empezar a planificar y diseñar el testing. (necesitamos conocer y entender las necesidades del negocio)
+
+UTIL: Los casos de prueba se suelen hacer en un excel
+
+CONCEPTOS:  Testing metodologico vs AdHoc (testing no sistematico, no se basa en su ejecucion, sin proceso)
+
+
+Proceso de testing:
+- Validar:   Vemos si hace lo que realmente tiene que hacer
+- Verificar: Ver si lo que hace lo hace bien
+
+CONCEPTOS:  Error vs Defecto
+    	      |_ Falla
+
+	Un defecto lo identifica el testing (son mas caros, relacionados a los requerimientos) es un error que se traslado,
+		a partir de ahi podemos ver si provoca un mal funcionamiento en el sistema, en caso de que asi sea, entonces es una falla, lo mismo para el error
+	Error relacionados a lo tecnico (en implementacion)
+	Los mas caros son los de arquitectura
+
+El testing se lleva un 30% a 50% del costo de todo el proyecto (de 1000hs de un proyecto, 300hs a 500hs de testing)
+
+Edad del defecto -> se mide desde que se introdujo el defecto, hasta que se detecto (mientras mayor sea la edad, mas caro es)
+
+los defectos tienen categorias, severidad, que tan grave es el defecto.
+
+Severidad: (NO esta relacionada a cuanto cuesta corregirlo, sino en cuanto impacto tiene)
+	- Bloqueante
+	- Grave
+	- Leve
+	- Cosmetico
+	.. Mejora (Es un consejo, no es un defecto, al de testing le parece que seria mejor)
+
+[Otra clasificacion]
+Niveles del testing (4) se prueba desde lo mas chiquito a lo mas grande
+	- Prueba de aceptacion de usuario
+	- Sistema o version
+	- Integracion o prueba de interfaces (por que de interfaces? si 2 componentes que funcionan bien, funcionan bien juntos) Se forma un build
+	- Unitaria (La hace el dev)
+
+Vinculamos los niveles con el proceso
+
+P. unitarias -> en implementacion
+P. de integracion -> en testing o en implementacion (dependiendo del nivel de conocimiento y dificultad de testeo)
+P. de sistema o version -> Siempre en testing (una misma persona no deberia probar su propio codigo) ademas, otra cosa mas ( es que el testing no dependa del mismo jefe )
+P. de aceptacion de usuario -> en despliegue
+
+
+[Otra clasificacion] (distinta a los niveles)
+Ambientes de software: ( de minima deberian estar los primeros 3 )
+	- Ambiente de desarrollo (Donde estan los devs) \___ Deben estar separadas, limpias, independientes una de la otra
+	- Ambiente de prueba				/
+	- Ambiente de produccion (Las pruebas de usuario se hacen aca cuando no hay amb. de preproduccion)
+	- Ambiente de pre-produccion (donde se hacen las Pruebas de aceptacion de usuario) (deberia tener el mismo nivel de infra y recursos que el amb. de prod)
+
+Ciclos de prueba
+primer ciclo de prueba de todos: Ciclo 0
+ciclo 1...
+ciclo 2...
+
+un ciclo de prueba por cada version que entra al testing
+	idealmente son 2
+	ciclo 0 siempre
+	ciclo 1 para ver si lo que se detecto en ciclo 0 anda bien.
+
+
+CICLO DE PRUEBA
+	- ESTRATEGIA DE PRUEBA ( 2 )
+		- Sin regresion : Eecuto C0 - reporte - corrigen - devuelven version - valido reporte - envio reporte ... etc
+			Es mas rapida, peor.
+ 		- Con regresion : C0 - Reporte - corrigen - devuelven - hago todo el analisis otra vez - reporte - corrigen - devuelven...
+			Es mejor, ya que pueden aparecer nuevos errores luego de las correcciones ( arreglar 1 error causa 3 errores nuevos )
+			La idea es tenerlas automatizadas.
+
+[Otra clasificacion]
+Tipos de prueba
+	Para los req funcionales:
+		- RF's en operacion normal ( PASA ) y negativa ( FALLA ).
+		- Pruebas de proceso de negocio
+		- Prueba de la documentacion (para algunos no es funcional) puntualmente 2 cosas 
+			.Manual de usuario 
+				( que el manual describa exactamente la forma en la que funciona el sistema y como el usuario puede alcanzar los objetivos )
+			.Manual de configuracion
+	Para los req no funcionales:
+		- pruebas de performance
+		- pruebas de interfaces   ( imposible hacerlo de manera 100% exaustivo )
+		- pruebas de escala completa   ( me comprometi a manejar 30 cajas de cajero, entonces probamos 30 cajas de cajero )
+		- pruebas de estres   ( no espero que pase, intento ver como reacciona el sistema cuando se cae )
+		- pruebas de seguridad
+		- pruebas de accesibilidad ( No solo es para las personas con las capacidades diferentes )
+		- ... hay muchos, seguir viendo.
+
+
+CASO DE PRUEBA . 
+tiene:
+	- Escenario [paso a paso]
+	- Datos de prueba (es parte de los datos las precondiciones, importantisimo)
+	- Resultado esperado
+
+las pruebas son DETALLADAS
+
+hasta donde probar, varias estrategias ( elegir la que apunte con mejorar la calidad )
+testing no es asegurar la calidad del producto
+testing no garantiza que no haya mas defectos
+testing hace CONTROL de calidad, no aseguramiento
+
+
+por ejemplo:
+ 	probar hasta 0% bloqueantes, 0% graves, 5% leves, 60% cosmeticos...
+	
