@@ -47,3 +47,40 @@ def test_compra_con_edad_negativa_falla():
     entrada = Entrada(fecha_visita=date.today(), edad_visitante=-5, tipo_pase="Regular", precio=100)
     with pytest.raises(ValidacionError):
         Compra(fecha=date.today(), forma_de_pago="tarjeta", entradas=[entrada], precio_total=100, usuario=usuario)
+
+
+# Resumen de compra al finalizar
+def test_resumen_compra_al_finalizar():
+    usuario = Usuario(mail="ana@example.com", contraseña="1234")
+    entradas = [
+        Entrada(fecha_visita=date.today(), edad_visitante=20, tipo_pase="Regular", precio=100),
+        Entrada(fecha_visita=date.today(), edad_visitante=25, tipo_pase="Regular", precio=100)
+    ]
+    compra = Compra(
+        fecha=date.today(),
+        forma_de_pago="tarjeta",
+        entradas=entradas,
+        precio_total=200,
+        usuario=usuario
+    )
+
+    resumen = f"Compra de {len(compra.entradas)} entradas para el {compra.fecha}"
+    assert "2 entradas" in resumen
+    assert str(date.today()) in resumen
+
+# Compra con 10 entradas (límite permitido)
+def test_compra_con_diez_entradas_limite_permitido():
+    usuario = Usuario(mail="ana@example.com", contraseña="1234")
+    entradas = [
+        Entrada(fecha_visita=date.today(), edad_visitante=30, tipo_pase="Regular", precio=100)
+        for _ in range(10)
+    ]
+    compra = Compra(
+        fecha=date.today(),
+        forma_de_pago="efectivo",
+        entradas=entradas,
+        precio_total=1000,
+        usuario=usuario
+    )
+    assert len(compra.entradas) == 10
+    assert compra.precio_total == 1000
