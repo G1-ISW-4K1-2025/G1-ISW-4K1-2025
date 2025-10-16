@@ -1,0 +1,75 @@
+TP 09 - 
+Unidad Nro. 4: Aseguramiento de Calidad de Proceso y de Producto 
+
+
+- Clases de equivalencia
+
+////////////////////////////////////////
+Taxis libres
+Taxis solicitados
+Taxis ocupados
+Taxis fuera de servicio
+Taxis del barrio ingresado en filtro
+Taxis del estado ingresado en filtro
+Taxi con la chapa ingresada en filtro
+////////////////////////////////////////
+
+OTRA SOLUCION //////////////////////////
+Taxis libre que cumple con filtro seleccionado
+Taxis del barrio ingresado en filtro
+Taxis del estado ingresado en filtro
+Taxi con la chapa ingresada en filtro
+
+
+- Particion de equivalencia
+
+
+
+  ENTRADAS
+________________________________________________________________________________________________________________________
+	Condicion externa	|    Clases de equivalencia validas	|	Clases de equivalencia invalidas	|
+--------------------------------|---------------------------------------|-----------------------------------------------|
+Chapa de taxi 			|   1. Cadena de caracteres con formato | 2. Cadena de caracteres con formato invalido  |  
+				|   (2 letras - 3 numeros - 2 letras) o | 3. La chapa no existe (no esta registrada)    |
+				|   (3 letras - 3 numeros)		| 						|
+--------------------------------|---------------------------------------|-----------------------------------------------|
+Barrios				|   4. Barrio existente			| 5. Barrio inexistente o no registrado 	|
+				|   6. No ingresa barrio		| 						|
+--------------------------------|---------------------------------------|-----------------------------------------------|
+Estado				|   7. Libre				| 11. Cualquier otra cosa			|
+				|   8. Solicitado			|						|
+				|   9. Ocupado				|						|
+				|   10. Fuera de servicio		|						|
+--------------------------------|---------------------------------------|-----------------------------------------------|
+Ubicacion			|   12. Ubicacion encendida		| 13. ubicacion apagada o deshabilitada		|
+--------------------------------|---------------------------------------|-----------------------------------------------|
+Logging de usuario		|   14. Usuario logeado con permisos	| 15. Usuario logueado sin permisos		|
+				|					| 16. Usuario no logueado			|
+________________________________|_______________________________________|_______________________________________________|
+
+
+  SALIDAS
+________________________________________________________________________________________________________________________
+	Condicion externa	|	Clases de equivalencia validas	|	Clases de equivalencia invalidas	|
+--------------------------------|---------------------------------------|-----------------------------------------------|
+Identificador de estado de taxi	| 17. Verde				| 						|
+				| 18. Amarillo				|						|
+				| 19. Rojo				|						|
+				| 20. Negro				|						|
+--------------------------------|---------------------------------------|-----------------------------------------------|
+Datos del pasajero		| 21. Muestra datos del pasajero en el 	|						|
+				|     taxi (nombre, apellido, telefono)	|						|
+				|	(?) -> no son entradas porque	|						|
+				|	    no son cosas que ingrese el	|						|
+				|	    administrador de la central	|						|
+--------------------------------|---------------------------------------|-----------------------------------------------|
+Datos del viaje			| 22. Hora de inicio con el formato	|						|
+				|	(hh:mm:ss), costo del viaje	|						|
+				|	como numero float en $ con 2	|						|
+				|	decimales			|						|
+--------------------------------|---------------------------------------|-----------------------------------------------|
+Mapa del taxi			| 23. Muestra los taxis en el mapa	|						|
+				| 	respetando los filtros		|						|
+--------------------------------|---------------------------------------|-----------------------------------------------|
+ERROR				|					| 24. Error 'La chapa tiene un formato invalido'|
+________________________________|_______________________________________|_______________________________________________|

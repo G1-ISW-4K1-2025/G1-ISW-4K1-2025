@@ -1,0 +1,38 @@
+
+
+- Clases de equivalencia:
+	Dan una respuesta equivalente por parte del software, por ejemplo:
+	Compras solo realizables por mayores de 18 años
+		PAra todos aquellos que tengan 18 o mas años, da una respuesta, equivalente para esa clase
+		Para todos aquellis que tengan menos de 18 años, da otra respuesta, equivalente para esa clase
+
+	EDAD
+	ENTRADAS		
+	| Condicion externa | Clases validas		   | Clases invalidas        |
+	| - Edad 	    | (muchas forma de escribirlo) | - Numeros enteros < 18  |
+	|		    | - cv-1 Numero entero >= 18   	   | - Strings (?) podria poner formato invalido, solo si aclaro cual es el formato valido en la clase valida ..
+	| 		    | 				   | - Floats  (?) .. en este caso se puede, ya que aclaro que el formato valido es Num entero
+
+	(?) en los puntos limites del software, es donde mas errores se producen, por ejemplo, el 18 en el x >= 18, en lugar de 50 en la misma validacion
+
+	
+- Casos de prueba
+	Con la menor cantidad de casos de prueba, probar la mayor cantidad de clases equivalentes.
+	CP 1:
+	|__/ Nombre: Compra de bebidas +18 -exitoso
+	|  
+	|__/ Precondiciones:
+	|	- Tenemos un usuario 'salva' logueado con permiso de comprador (?) -> decimos bien claro que usuario esta logueado
+	|	- Fecha de hoy : 16 / 10 / 2025 (?) -> importante la fecha, imaginemos que es el dia de su cumple,
+	|					       en un entorno de pruebas bien hecho, deberiamos poder cambiar la fecha
+	|
+	|__/  |____________________Pasos__________________________|_________________Resultados esperados_____________________________________________|
+	|     | 1. Salva selecciona opcion ingresar edad		| 2. El SW permite comprar (?) paso 2 porque es el paso que nos interesa validar?  |
+	|     | 2. Salva ingresa 20 años				| 										   |
+	|  	(?) -> Si tuviera un formulario que valida cuando el usuario hace el submit, entonces habria un paso 3, y el resultado esperado estaria sobre el paso 3
+	|
+	|__/ Clases de equivalencia:
+		cv-1 (mayores de 18 años)
+		(?) -> podriamos tener una cv-2 con la edad >= 60 años por ejemplo, para implementar descuento para jubilados
+
+
