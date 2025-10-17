@@ -20,4 +20,3 @@ class Entrada:
         self.edad_visitante = edad_visitante
         self.tipo_pase = tipo_pase
         self.precio = precio
-
