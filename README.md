@@ -38,7 +38,7 @@ Este es el repositorio de la materia *Ingeniería y Calidad de Software* pertene
   - Trabajos Individuales
     - Notas de clase
       - Nota_01_Ciclos de vida_Witt.txt
-      - Nota_02_Gestión de producto_Ceballos.txt
+      - Nota_02_Gestión de producto_Ceballos.pdf
     - Resoluciones de TPs
       - Res_E_01_Estrada.pdf
       - Res_E_02_Stanglino.txt
