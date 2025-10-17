@@ -3,12 +3,13 @@ from app.main import app
 import pytest
 from datetime import date, timedelta
 
-
 client = TestClient(app)
+
 
 def test_read_root():
     resp = client.get("/")
     assert resp.json() == {"message": "Hola, somos el grupo 1 de la materia ISW!"}
+
 
 # Compra exitosa con datos válidos
 def test_compra_exitosa_con_datos_validos():
