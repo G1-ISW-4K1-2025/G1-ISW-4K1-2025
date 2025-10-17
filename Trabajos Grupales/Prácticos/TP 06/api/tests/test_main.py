@@ -2,7 +2,7 @@ from fastapi.testclient import TestClient
 from app.main import app
 import pytest
 from datetime import date, timedelta
-from app.clases import Usuario, Entrada, Compra, ValidacionError
+from api.app.ServicioCompraEntradas import Usuario, Entrada, Compra, ValidacionError
 
 client = TestClient(app)
 def test_read_root():
