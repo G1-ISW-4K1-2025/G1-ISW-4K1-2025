@@ -77,7 +77,7 @@ def ejemplo_insercion():
     print("\n✓ Datos de ejemplo insertados")
 
 # Descomentar la siguiente línea para ejecutar el ejemplo
-# ejemplo_insercion()
+ejemplo_insercion()
 
 # Cerrar conexión
 conn.close()
