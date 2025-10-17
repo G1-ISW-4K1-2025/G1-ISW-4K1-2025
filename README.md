@@ -56,7 +56,7 @@ Este es el repositorio de la materia *Ingeniería y Calidad de Software* pertene
 | Guías | Guía_&lt;NombreGuía&gt;.pdf | /Material de Estudio/Guías
 | Enunciados de Trabajos Grupales Prácticos | Enunciado_TP_&lt;NN&gt;.pdf | /Trabajos Grupales/Practicos/TP &lt;NN&gt;
 | Entrega de Trabajos Grupales Prácticos | Entrega_TP_&lt;NN&gt;.pdf | /Trabajos Grupales/Practicos/TP <NN&gt;
-| Notas de clase | Nota_&lt;N Unidad&gt;_ &lt;Tema&gt;_&lt;Apellido&gt;.txt | /Trabajos individuales/Notas de clase
+| Notas de clase | Nota_&lt;N Unidad&gt;_ &lt;Tema&gt;_&lt;Apellido&gt;.&lt;ext&gt;  | /Trabajos individuales/Notas de clase
 | Resoluciones de TPs | Res_&lt;Tipo TP&gt;_ &lt;NN&gt;_ &lt;Apellido&gt;.&lt;ext&gt; | /Trabajos individuales/Resoluciones de TPs
 
 ## Glosario
