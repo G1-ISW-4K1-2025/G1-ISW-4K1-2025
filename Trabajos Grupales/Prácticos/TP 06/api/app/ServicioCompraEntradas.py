@@ -54,4 +54,38 @@ class ServicioCompraEntradas:
 
             return True
 
-    
+    def calcular_precio_entrada(self, edad: int, tipo_pase: str) -> float:
+        """
+        Calcula el precio de una entrada según edad y tipo de pase
+        """
+        if tipo_pase == "VIP":
+            return 200.0
+
+    #Pase Regular
+        if edad < 12:
+            return 50.0  # Niños
+        elif edad >= 65:
+            return 75.0  # Adultos mayores
+        else:
+            return 100.0  # General
+
+    def crear_entradas(self, fecha_visita: date, edades: List[int], tipo_pase: str = "Regular") -> List[Entrada]:
+        """
+        Crea las entradas según los datos proporcionados
+        """
+        entradas = []
+
+        for edad in edades:
+            if edad is None:
+                raise ValidacionError("Todas las entradas deben tener edad del visitante")
+
+            precio = self.calcular_precio_entrada(edad, tipo_pase)
+            entrada = Entrada(
+                fecha_visita=fecha_visita,
+                edad_visitante=edad,
+                tipo_pase=tipo_pase,
+                precio=precio
+            )
+            entradas.append(entrada)
+
+        return entradas
