@@ -4,13 +4,11 @@ class ValidacionError(Exception):
     """Excepción personalizada para errores de validación"""
     pass
 
-
 class Usuario:
     def init(self, mail: str, contraseña: str):
         self.mail = mail
         self.contraseña = contraseña
-
-
+        
 class Entrada:
     def init(self, fecha_visita: date, edad_visitante: Optional[int], tipo_pase: str, precio: float):
         if edad_visitante is None:
@@ -22,3 +20,4 @@ class Entrada:
         self.edad_visitante = edad_visitante
         self.tipo_pase = tipo_pase
         self.precio = precio
+
