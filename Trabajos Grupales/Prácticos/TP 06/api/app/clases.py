@@ -15,8 +15,10 @@ class Entrada:
             raise ValidacionError("La edad del visitante es requerida")
         if edad_visitante < 0:
             raise ValidacionError("La edad del visitante no puede ser negativa")
-
         self.fecha_visita = fecha_visita
         self.edad_visitante = edad_visitante
         self.tipo_pase = tipo_pase
         self.precio = precio
+
+
+
