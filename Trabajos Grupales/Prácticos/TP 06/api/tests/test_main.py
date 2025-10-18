@@ -1,8 +1,11 @@
 from fastapi.testclient import TestClient
-from app.main import app
+from app.api import app
 import pytest
 from datetime import date, timedelta
-from api.app.ServicioCompraEntradas import Usuario, Entrada, Compra, ValidacionError
+from app.usuario import Usuario
+from app.entrada import Entrada
+from app.validacionError import ValidacionError
+from app.compra import Compra
 
 client = TestClient(app)
 def test_read_root():
@@ -60,11 +63,11 @@ def test_compra_con_tarjeta_redirige_a_mercadopago(monkeypatch):
     usuario = Usuario(mail="ana@example.com", contraseña="1234")
     entrada = Entrada(fecha_visita=date.today(), edad_visitante=28, tipo_pase="Regular", precio=100)
 
-    def mock_redirigir_a_pago(forma_pago):
+    def mock_redirigir_a_pago(self, forma_pago):
         if forma_pago == "tarjeta":
             return "https://mercadopago.com/pago123"
 
-    monkeypatch.setattr("modelos.Compra.redirigir_a_pago", mock_redirigir_a_pago)
+    monkeypatch.setattr("app.compra.Compra.redirigir_a_pago", mock_redirigir_a_pago)
     
     compra = Compra(
         fecha=date.today(),
@@ -91,11 +94,11 @@ def test_envio_mail_confirmacion_despues_de_compra(monkeypatch):
 
     mail_enviado = {}
 
-    def mock_enviar_mail_confirmacion(usuario, compra):
+    def mock_enviar_mail_confirmacion(self, usuario, compra):
         mail_enviado["ok"] = True
         mail_enviado["destinatario"] = usuario.mail
 
-    monkeypatch.setattr("modelos.Compra.enviar_mail_confirmacion", mock_enviar_mail_confirmacion)
+    monkeypatch.setattr("app.compra.Compra.enviar_mail_confirmacion", mock_enviar_mail_confirmacion)
 
     compra.enviar_mail_confirmacion(usuario, compra)
 
@@ -120,9 +123,8 @@ def test_compra_con_fecha_pasada_falla():
 # Falta edad de los visitantes
 def test_compra_sin_edad_de_visitantes_falla():
     usuario = Usuario(mail="ana@example.com", contraseña="1234")
-    entrada = Entrada(fecha_visita=date.today(), edad_visitante=None, tipo_pase="Regular", precio=100)
     with pytest.raises(ValidacionError):
-        Compra(fecha=date.today(), forma_pago="tarjeta", entradas=[entrada], precio_total=100, usuario=usuario)
+        entrada = Entrada(fecha_visita=date.today(), edad_visitante=None, tipo_pase="Regular", precio=100)
 
 # Menos visitantes que entradas
 def test_compra_con_menos_visitantes_que_entradas_falla():
@@ -136,9 +138,8 @@ def test_compra_con_menos_visitantes_que_entradas_falla():
 # Visitante con edad negativa
 def test_compra_con_edad_negativa_falla():
     usuario = Usuario(mail="ana@example.com", contraseña="1234")
-    entrada = Entrada(fecha_visita=date.today(), edad_visitante=-5, tipo_pase="Regular", precio=100)
     with pytest.raises(ValidacionError):
-        Compra(fecha=date.today(), forma_pago="tarjeta", entradas=[entrada], precio_total=100, usuario=usuario)
+        entrada = Entrada(fecha_visita=date.today(), edad_visitante=-5, tipo_pase="Regular", precio=100)
 
 
 # Resumen de compra al finalizar

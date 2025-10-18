@@ -10,11 +10,11 @@
 
 **Crear y activar entorno virtual** (ejecutar estos 2 comandos)
 
-    python3 -m venv .venv
+    python3 -m venv venv
 
-    source .venv/bin/activate (en linux)
+    source venv/bin/activate (en linux)
     
-    source .venv/Scripts/activate (en windows)
+    source venv/Scripts/activate (en windows)
 
 **Instalar dependencias**
 
@@ -22,11 +22,11 @@
 
 **Ejecutar tests**
 
-    python -m pytest -q
+    python -m pytest -v
 
 **Levantar servidor de desarrollo**
 
-    python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+    python -m uvicorn app.api:app --reload --host 127.0.0.1 --port 8000
 
 **Desactivar entorno virtual en terminal**
 
