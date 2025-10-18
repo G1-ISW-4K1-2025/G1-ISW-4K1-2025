@@ -90,6 +90,29 @@ class ServicioCompraEntradas:
 
         return entradas
     
+    def calcular_precio_total(self, entradas: List[Entrada]) -> float:
+        """
+        Calcula el precio total de todas las entradas
+        """
+        return sum(entrada.precio for entrada in entradas)
+    
+    def validar_forma_pago(self, forma_pago: str) -> bool:
+        """
+        Valida que se haya seleccionado una forma de pago válida
+        """
+        formas_validas = ["efectivo", "tarjeta"]
+        
+        if not forma_pago or forma_pago.lower() not in formas_validas:
+            raise ValidacionError("Debe seleccionar una forma de pago válida (efectivo o tarjeta)")
+        
+        return True
+    
+    #Faltan implemetnar estas funciones
+    def procesar_compra():
+        pass
+
+    def generar_resumen_compra():
+        pass
 
 #Ejemplo de uso
 if __name__ == "__main__":
