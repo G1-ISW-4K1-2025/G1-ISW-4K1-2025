@@ -89,3 +89,9 @@ class ServicioCompraEntradas:
             entradas.append(entrada)
 
         return entradas
+    #Ejemplo de uso
+    if name == "main":
+        servicio = ServicioCompraEntradas()
+
+#Crear un usuario registrado
+    usuario = Usuario(mail="ana@example.com", contraseña="1234")
