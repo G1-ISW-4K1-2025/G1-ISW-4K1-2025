@@ -89,9 +89,10 @@ class ServicioCompraEntradas:
             entradas.append(entrada)
 
         return entradas
-    #Ejemplo de uso
-    if name == "main":
-        servicio = ServicioCompraEntradas()
+    
 
+#Ejemplo de uso
+if __name__ == "__main__":
+    servicio = ServicioCompraEntradas()
 #Crear un usuario registrado
     usuario = Usuario(mail="ana@example.com", contraseña="1234")
