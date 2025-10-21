@@ -8,10 +8,6 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 path_db = os.path.join(current_dir, '..', '..', 'db', 'app.db')
 
 from .usuario import Usuario
-from .compra import Compra
-from .pago import Pago
-from .entrada import Entrada
-
 
 class RepositorioCompraEntradas:
     def __init__(self):
@@ -47,3 +43,11 @@ class RepositorioCompraEntradas:
         finally:
             if conn:
                 conn.close()
+
+    def crear_usuario(self, usuario: Usuario):
+        pass
+
+    def obtener_usuario_por_id(self, usuario_id: int) -> Usuario:
+        """Obtiene un usuario por su ID desde la base de datos."""
+        pass
+

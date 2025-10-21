@@ -1,113 +1,97 @@
-from datetime import date, timedelta
-from typing import List, Dict, Optional
-from .compra import Compra 
+from datetime import date
 from .entrada import Entrada
 from .validacionError import ValidacionError
 from .usuario import Usuario
+from .repositorioCompraEntradas import RepositorioCompraEntradas
 
 class ServicioCompraEntradas:
     """
     Servicio que implementa la funcionalidad de compra de entradas
     según la User Story 8 de EcoHarmony Park
     """
-    
-    def __init__(self):
-        self.compras_realizadas: List[Compra] = []
-        self.dias_abierto = [0, 1, 2, 3, 4, 5, 6]  # Lunes a Domingo
 
-    def validar_fecha_visita(self, fecha_visita: date) -> bool:
-        """
-        Valida que la fecha de visita sea válida:
-        
-        Debe ser hoy o futura
-        Debe estar dentro de los días que el parque está abierto
-        """
-        if fecha_visita < date.today():
+    def __init__(self):
+        self.dias_abierto = [0, 1, 2, 3, 4, 5]  # Lunes a Sábado [1, 2, 3, 4, 5, 6]
+        self.repositorio = RepositorioCompraEntradas()
+        self.max_entradas = 10
+        self.min_entradas = 1
+        self.formas_pago_validas = ["efectivo", "tarjeta"]
+        self.tipos_pase_validos = ["VIP", "Regular"]
+
+    def _validar_forma_pago(self, forma_pago: str) -> str:
+        """Valida y normaliza la forma de pago."""
+        if not forma_pago or not isinstance(forma_pago, str):
+            raise ValidacionError("La forma de pago es requerida")
+
+        forma_pago = forma_pago.lower().strip()
+        if forma_pago not in self.formas_pago_validas:
+            raise ValidacionError(f"Debe seleccionar una forma de pago válida: {', '.join(self.formas_pago_validas)}")
+
+        return forma_pago
+
+    def _validar_fecha_visita(self, fecha_visita: str) -> date:
+        """Valida que la fecha de visita sea válida."""
+        try:
+            fecha = date.fromisoformat(fecha_visita)
+        except ValueError:
+            raise ValidacionError("Formato de fecha inválido. Use YYYY-MM-DD")
+
+        if fecha < date.today():
             raise ValidacionError("La fecha de visita no puede ser anterior a hoy")
 
-    # Verificar que el parque esté abierto ese día
-        if fecha_visita.weekday() not in self.dias_abierto:
+        if fecha.weekday() not in self.dias_abierto:
             raise ValidacionError("El parque está cerrado en la fecha seleccionada")
 
-        return True
+        return fecha
 
-    def validar_cantidad_entradas(self, cantidad: int) -> bool:
-        """
-        Valida que la cantidad de entradas sea válida:
+    def _validar_cantidad_entradas(self, cantidad: int) -> bool:
+        """Valida la cantidad de entradas."""
+        if cantidad < self.min_entradas:
+            raise ValidacionError(f"Debe solicitar al menos {self.min_entradas} entrada")
 
-        Debe ser mayor a 0
-        No debe superar las 10 entradas
-        """
-        if cantidad <= 0:
-            raise ValidacionError("Debe solicitar al menos una entrada")
-
-        if cantidad > 10:
-            raise ValidacionError("La cantidad de entradas no puede ser mayor a 10")
+        if cantidad > self.max_entradas:
+            raise ValidacionError(f"La cantidad de entradas no puede ser mayor a {self.max_entradas}")
 
         return True
 
-    def calcular_precio_entrada(self, edad: int, tipo_pase: str) -> float:
-        """
-        Calcula el precio de una entrada según edad y tipo de pase
-        """
-        if tipo_pase == "VIP":
-            return 200.0
+    def _validar_usuario_registrado(self, usuario_id: int) -> Usuario:
+        """Valida que el usuario esté registrado."""
+        if not usuario_id or usuario_id <= 0:
+            raise ValidacionError("ID de usuario inválido")
 
-    #Pase Regular
-        if edad < 12:
-            return 50.0  # Niños
-        elif edad >= 65:
-            return 75.0  # Adultos mayores
-        else:
-            return 100.0  # General
+        try:
+            usuario = self.repositorio.obtener_usuario_por_id(usuario_id)
+            if not usuario:
+                raise ValidacionError("El usuario no está registrado")
+            return usuario
+        except Exception as e:
+            raise ValidacionError(f"Error al validar usuario: {str(e)}")
 
-    def crear_entradas(self, fecha_visita: date, edades: List[int], tipo_pase: str = "Regular") -> List[Entrada]:
-        """
-        Crea las entradas según los datos proporcionados
-        """
-        entradas = []
+    def _validar_entrada_completa(self, entrada: Entrada) -> bool:
+        """Valida todos los campos de una entrada."""
+        if not entrada:
+            raise ValidacionError("La entrada no puede ser nula")
 
-        for edad in edades:
-            if edad is None:
-                raise ValidacionError("Todas las entradas deben tener edad del visitante")
+        if not isinstance(entrada.edad_visitante, int):
+            raise ValidacionError("La edad del visitante debe ser un número entero")
 
-            precio = self.calcular_precio_entrada(edad, tipo_pase)
-            entrada = Entrada(
-                fecha_visita=fecha_visita,
-                edad_visitante=edad,
-                tipo_pase=tipo_pase,
-                precio=precio
-            )
-            entradas.append(entrada)
+        # Validar edad
+        if entrada.edad_visitante < 0:
+            raise ValidacionError("La edad del visitante no puede ser negativa")
 
-        return entradas
-    
-    def calcular_precio_total(self, entradas: List[Entrada]) -> float:
-        """
-        Calcula el precio total de todas las entradas
-        """
-        return sum(entrada.precio for entrada in entradas)
-    
-    def validar_forma_pago(self, forma_pago: str) -> bool:
-        """
-        Valida que se haya seleccionado una forma de pago válida
-        """
-        formas_validas = ["efectivo", "tarjeta"]
-        
-        if not forma_pago or forma_pago.lower() not in formas_validas:
-            raise ValidacionError("Debe seleccionar una forma de pago válida (efectivo o tarjeta)")
-        
+        if entrada.edad_visitante > 120:
+            raise ValidacionError("La edad del visitante no es válida")
+
+        # Validar tipo de pase
+        if entrada.tipo_pase not in self.tipos_pase_validos:
+            raise ValidacionError(f"El tipo de pase debe ser uno de: {', '.join(self.tipos_pase_validos)}")
+
+        # Validar precio
+        if entrada.precio < 0:
+            raise ValidacionError("El precio de la entrada no puede ser negativo")
+
+        # Validar fecha de visita
+        if entrada.fecha_visita:
+            self._validar_fecha_visita(entrada.fecha_visita)
+
         return True
-    
-    #Faltan implemetnar estas funciones
-    def procesar_compra():
-        pass
-
-    def generar_resumen_compra():
-        pass
-
-#Ejemplo de uso
-if __name__ == "__main__":
-    servicio = ServicioCompraEntradas()
-#Crear un usuario registrado
-    usuario = Usuario(mail="ana@example.com", contraseña="1234")
