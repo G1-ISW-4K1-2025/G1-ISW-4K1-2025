@@ -92,6 +92,54 @@ def test_post_validar_compra_entradas_con_efectivo():
     assert len(resp_json["detalle_compra"]["entradas"]) == 2
     assert resp_json["envio_de_mail"] == "ENVIADO"
 
+def devolver_fecha_dia_abierto():
+    fecha = date.today()
+    while fecha.weekday() == 6:  # Mientras sea domingo
+        fecha += timedelta(days=1)
+    return fecha
+
+def test_validar_compra_tarjeta():
+    forma_pago = "tarjeta"
+    entradas = [
+        Entrada(str(devolver_fecha_dia_abierto()), edad_visitante=20, tipo_pase="Regular", precio=1000.0),
+        Entrada(str(devolver_fecha_dia_abierto()), edad_visitante=15, tipo_pase="VIP", precio=2000.0)
+    ]
+    usuario_id = 1
+    fecha_visita = "2025-12-20"
+    compra, cant_entradas, fecha_compra, estado_envio_mail = service.validar_compra(forma_pago, entradas, usuario_id)
+
+    assert compra is not None
+    assert cant_entradas == 2
+    assert fecha_compra == date.today()
+    assert estado_envio_mail == "PENDIENTE"
+    assert compra.usuario.id_usuario == 1
+    assert compra.pago is not None
+    assert compra.pago.monto == 4700.5
+    assert compra.pago.forma_pago == "tarjeta"
+    assert compra.pago.estado_pago == "PAGO_PENDIENTE_POR_MERCADO_PAGO"
+    assert compra.pago.codigo_pago == 0
+def test_validar_compra_efectivo():
+    forma_pago = "efectivo"
+    entradas = [
+        Entrada(str(devolver_fecha_dia_abierto()), edad_visitante=20, tipo_pase="Regular", precio=1000.0),
+        Entrada(str(devolver_fecha_dia_abierto()), edad_visitante=15, tipo_pase="VIP", precio=2000.0)
+    ]
+    usuario_id = 1
+    fecha_visita = "2025-12-20"
+    compra, cant_entradas, fecha_compra, estado_envio_mail = service.validar_compra(forma_pago, entradas, usuario_id)
+
+    assert compra is not None
+    assert cant_entradas == 2
+    assert fecha_compra == date.today()
+    assert estado_envio_mail == "ENVIADO"
+    assert compra.usuario.id_usuario == usuario_id
+    assert compra.pago is not None
+    assert compra.pago.monto == 4700.5
+    assert compra.pago.forma_pago == "efectivo"
+    assert compra.pago.estado_pago == "PAGO_A_REALIZAR_EN_CAJA"
+    assert compra.pago.codigo_pago == 0
+
+
 """
 # Compra exitosa con datos válidos
 def test_compra_exitosa_con_datos_validos():
