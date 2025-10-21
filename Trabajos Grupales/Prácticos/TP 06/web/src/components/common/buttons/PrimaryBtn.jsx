@@ -1,14 +1,15 @@
 import React from "react";
 
-const IconBtn = ({ icon, onClick, className }) => {
+const PrimaryBtn = ({ children, onClick, className }) => {
     return (
         <button
             onClick={onClick}
-            className={`bg-white hover:bg-zinc-100 text-black font-semibold p-6 rounded-full shadow-xl flex items-center justify-center
-                ${className}`}>
-            {icon}
+            className={`bg-custom-green text-white font-semibold py-4 px-6 text-3xl rounded-xl shadow-xl
+                ${className}`}
+        >
+            {children}
         </button>
     );
 };
 
-export default IconBtn;
+export default PrimaryBtn;
