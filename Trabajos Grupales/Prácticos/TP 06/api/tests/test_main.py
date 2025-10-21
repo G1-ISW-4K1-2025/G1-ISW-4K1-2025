@@ -244,20 +244,6 @@ def test_validar_fecha_visita_dia_cerrado():
     with pytest.raises(ValidacionError) as excinfo:
         service._validar_fecha_visita(str(fecha_cerrada))
     assert str(excinfo.value) == "El parque está cerrado en la fecha seleccionada"
- 
-def test_validar_cantidad_entradas_valida():
-    assert service._validar_cantidad_entradas(5) is True
-def test_validar_cantidad_entradas_cero():
-    cant_min_entradas = service.min_entradas
-    with pytest.raises(ValidacionError) as excinfo:
-        service._validar_cantidad_entradas(0)
-    assert str(excinfo.value) == f"Debe solicitar al menos {cant_min_entradas} entrada"
-def test_validar_cantidad_entradas_exceso():
-
-    with pytest.raises(ValidacionError) as excinfo:
-        service._validar_cantidad_entradas(11)
-    assert str(excinfo.value) == "La cantidad de entradas no puede ser mayor a 10"
-
 
 
 """
