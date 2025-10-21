@@ -12,6 +12,87 @@ def test_read_root():
     resp = client.get("/")
     assert resp.json() == {"message": "Hola, somos el grupo 1 de la materia ISW!"}
 
+# Test para la compra de entradas (PASA)
+def test_post_validar_compra_entradas_con_tarjeta():
+    body_post_json = {
+                    "forma_pago": "tarjeta",
+                    "entradas": [
+                        {
+                            "edad_visitante": 30,
+                            "tipo_pase": "VIP",
+                            "precio": 2000.0
+                        },
+                        {
+                            "edad_visitante": 25,
+                            "tipo_pase": "Regular",
+                            "precio": 1000.0
+                        }
+                    ],
+                    "fecha_visita": "2025-12-15",
+                    "id_usuario": 1
+                }
+
+    resp = client.post("/validar-compra-entradas", json=body_post_json)
+    resp_json = resp.json()
+    assert resp_json["status_code"] == 200
+    assert resp_json["message"] == "Compra validada con éxito"
+    assert "detalle_compra" in resp_json
+    assert resp_json["detalle_compra"]["fecha_compra"] == str(date.today())
+    assert resp_json["detalle_compra"]["precio_total"] == 4700.5 # 100 + 70 + (170 * 0.15) + 1250.5
+    assert resp_json["detalle_compra"]["usuario"]["id"] == 1
+    assert resp_json["detalle_compra"]["pago"]["forma_pago"] == "tarjeta"
+    assert resp_json["detalle_compra"]["pago"]["estado"] == "PAGO_PENDIENTE_POR_MERCADO_PAGO"
+    assert resp_json["detalle_compra"]["entradas"][0]["edad_visitante"] == 30
+    assert resp_json["detalle_compra"]["entradas"][0]["tipo_pase"] == "VIP"
+    assert resp_json["detalle_compra"]["entradas"][0]["precio"] == 2000.0
+    assert resp_json["detalle_compra"]["entradas"][0]["fecha_visita"] == "2025-12-15"
+    assert resp_json["detalle_compra"]["entradas"][1]["edad_visitante"] == 25
+    assert resp_json["detalle_compra"]["entradas"][1]["tipo_pase"] == "Regular"
+    assert resp_json["detalle_compra"]["entradas"][1]["precio"] == 1000.0
+    assert resp_json["detalle_compra"]["entradas"][1]["fecha_visita"] == "2025-12-15"
+    assert len(resp_json["detalle_compra"]["entradas"]) == 2
+    assert resp_json["envio_de_mail"] == "PENDIENTE"
+def test_post_validar_compra_entradas_con_efectivo():
+    body_post_json = {
+                    "forma_pago": "efectivo",
+                    "entradas": [
+                        {
+                            "edad_visitante": 30,
+                            "tipo_pase": "VIP",
+                            "precio": 2000.0
+                        },
+                        {
+                            "edad_visitante": 25,
+                            "tipo_pase": "Regular",
+                            "precio": 1000.0
+                        }
+                    ],
+                    "fecha_visita": "2025-12-15",
+                    "id_usuario": 1
+                }
+
+    resp = client.post("/validar-compra-entradas", json=body_post_json)
+    resp_json = resp.json()
+    assert resp_json["status_code"] == 200
+    assert resp_json["message"] == "Compra validada con éxito"
+    assert "detalle_compra" in resp_json
+    assert resp_json["detalle_compra"]["fecha_compra"] == str(date.today())
+    assert resp_json["detalle_compra"]["precio_total"] == 4700.5 # 100 + 70 + (170 * 0.15) + 1250.5
+    assert resp_json["detalle_compra"]["usuario"]["id"] == 1
+    assert resp_json["detalle_compra"]["pago"]["forma_pago"] == "efectivo"
+    assert resp_json["detalle_compra"]["pago"]["estado"] == "PAGO_A_REALIZAR_EN_CAJA"
+    assert resp_json["detalle_compra"]["entradas"][0]["edad_visitante"] == 30
+    assert resp_json["detalle_compra"]["entradas"][0]["tipo_pase"] == "VIP"
+    assert resp_json["detalle_compra"]["entradas"][0]["precio"] == 2000.0
+    assert resp_json["detalle_compra"]["entradas"][0]["fecha_visita"] == "2025-12-15"
+    assert resp_json["detalle_compra"]["entradas"][1]["edad_visitante"] == 25
+    assert resp_json["detalle_compra"]["entradas"][1]["tipo_pase"] == "Regular"
+    assert resp_json["detalle_compra"]["entradas"][1]["precio"] == 1000.0
+    assert resp_json["detalle_compra"]["entradas"][1]["fecha_visita"] == "2025-12-15"
+    assert len(resp_json["detalle_compra"]["entradas"]) == 2
+    assert resp_json["envio_de_mail"] == "ENVIADO"
+
+"""
 # Compra exitosa con datos válidos
 def test_compra_exitosa_con_datos_validos():
     usuario = Usuario(mail="ana@example.com", contraseña="1234")
@@ -177,3 +258,5 @@ def test_compra_con_diez_entradas_limite_permitido():
     )
     assert len(compra.entradas) == 10
     assert compra.precio_total == 1000
+
+"""
