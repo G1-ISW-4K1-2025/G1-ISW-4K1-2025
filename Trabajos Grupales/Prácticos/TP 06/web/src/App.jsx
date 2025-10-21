@@ -1,27 +1,10 @@
-import { useState, useEffect } from 'react';
-import { getSaludo } from '../services/service_api'
+import React from "react";
 
-function App() {
-  const [mensaje, setMensaje] = useState('');
-
-  useEffect(() => {
-    const cargarSaludo = async () => {
-      try {
-        const data = await getSaludo();
-        setMensaje(data.message);
-      } catch (err) {
-        console.error(err);
-        setMensaje('Error al cargar el saludo');
-      }
-    };
-    cargarSaludo();
-  }, []);
-
-
+const App = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <h1 className="font-montserrat text-4xl text-blue-600">
-        {mensaje}
+        Frontend
       </h1>
     </div>
   );
