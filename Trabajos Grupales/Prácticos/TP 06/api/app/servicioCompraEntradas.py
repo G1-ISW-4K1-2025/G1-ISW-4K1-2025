@@ -54,6 +54,39 @@ class ServicioCompraEntradas:
             raise e
         except Exception as e:
             raise ValidacionError(f"Error inesperado durante la validación: {str(e)}")
+        
+    def generar_resumen_compra(self, compra: Compra) -> Dict:
+        """
+        Genera un resumen detallado de la compra.
+        """
+        resumen = {
+            "id_compra": compra.id_compra,
+            "fecha_compra": compra.fecha.isoformat(),
+            "precio_total": compra.precio_total,
+            "usuario": {
+                "id": compra.usuario.id_usuario,
+                "nombre": f"{compra.usuario.nombre} {compra.usuario.apellido}",
+                "email": compra.usuario.mail
+            },
+            "pago": {
+                "forma_pago": compra.pago.forma_pago,
+                "estado": compra.pago.estado_pago,
+                "codigo": compra.pago.codigo_pago,
+                "monto": compra.pago.monto
+            },
+            "entradas": []
+        }
+        
+        for entrada in compra.entradas:
+            resumen["entradas"].append({
+                "id_entrada": entrada.id_entrada,
+                "fecha_visita": entrada.fecha_visita,
+                "tipo_pase": entrada.tipo_pase,
+                "edad_visitante": entrada.edad_visitante,
+                "precio": entrada.precio
+            })
+        
+        return resumen
 
     def _validar_forma_pago(self, forma_pago: str) -> str:
         """Valida y normaliza la forma de pago."""

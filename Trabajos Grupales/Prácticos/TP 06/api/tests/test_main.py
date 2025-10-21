@@ -261,6 +261,36 @@ def test_validar_cantidad_entradas_exceso():
         service._validar_cantidad_entradas(11)
     assert str(excinfo.value) == "La cantidad de entradas no puede ser mayor a 10"
 
+def test_valida_usuario_registrado():
+    id_usuario = 1
+    resultado = service._validar_usuario_registrado(id_usuario)
+    assert isinstance(resultado, Usuario)
+    assert resultado.id_usuario == id_usuario
+def test_valida_usuario_registrado_id_invalido():
+    usuario_id_invalido = -1
+    with pytest.raises(ValidacionError) as excinfo:
+        service._validar_usuario_registrado(usuario_id_invalido)
+    assert str(excinfo.value) == "ID de usuario inválido"
+def test_post_validar_compra_entradas_usuario_inexistente():
+    compra_data = {
+                    "forma_pago": "tarjeta",
+                    "entradas": [
+                        {
+                            "edad_visitante": 30,
+                            "tipo_pase": "VIP",
+                            "precio": 100.0
+                        }
+                    ],
+                    "fecha_visita": "2025-12-15",
+                    "id_usuario": 9999  # ID de usuario inexistente
+                }
+
+    resp = client.post("/validar-compra-entradas", json=compra_data)
+    resp_json = resp.json()
+    assert resp_json["status_code"] == 400
+    assert resp_json["message"] == "Error: Error al validar usuario: El usuario no está registrado"
+    assert resp_json["detalle_compra"] is None
+
 def test_validar_entrada_valida():
     entrada_valida = Entrada(fecha_visita=str(devolver_fecha_dia_abierto()), edad_visitante=25, tipo_pase="VIP", precio=2000.0)
     assert service._validar_entrada_completa(entrada_valida) is True
