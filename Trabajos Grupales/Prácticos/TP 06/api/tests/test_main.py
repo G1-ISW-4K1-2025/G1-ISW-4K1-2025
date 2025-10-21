@@ -6,8 +6,11 @@ from app.usuario import Usuario
 from app.entrada import Entrada
 from app.validacionError import ValidacionError
 from app.compra import Compra
+from app.servicioCompraEntradas import ServicioCompraEntradas
 
 client = TestClient(app)
+service = ServicioCompraEntradas()
+
 def test_read_root():
     resp = client.get("/")
     assert resp.json() == {"message": "Hola, somos el grupo 1 de la materia ISW!"}
