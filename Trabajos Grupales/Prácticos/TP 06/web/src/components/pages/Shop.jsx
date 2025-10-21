@@ -1,15 +1,23 @@
 import React, {useState, useEffect} from "react";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import ContentCard from '../common/cards/ContentCard';
 import BottomNav from '../common/layout/BottomNav';
+import Notification from '../common/Notification';
+
+import DateSelector from '../shop/DateSelector';
 
 const STEPS = { DATE: 1, TICKETS: 2, PAYMENT: 3 };
 const TOTAL_STEPS = 3;
 
+
 const Shop = () => {
     const navigate = useNavigate();
+    const [notification, setNotification] = useState({});
+    const [showNotification, setShowNotification] = useState(false)
     const [submissionStatus, setSubmissionStatus] = useState('waiting'); // waiting, submitting, success
-    const [currentStep, setCurrentStep] = useState(STEPS.DATE);
+    const [searchParams] = useSearchParams();
+    const [currentStep, setCurrentStep] = useState(STEPS.DATE); // YA ESTA
     const userId = localStorage.getItem('userId')
     const [formData, setFormData] = useState({
         userId: userId,
@@ -25,28 +33,46 @@ const Shop = () => {
         paymentMethod: '',
     });
     
+    const updateFormData = (newData) => {
+        setFormData((prev) => ({ ...prev, ...newData }));
+    };
+    
     const handleNext = () => {
-        // if (currentStep === STEPS.DATE && !formData.visitDate) {
-        //     // Notificacion de que debe seleccionar una fecha
-        //     console.log("Por favor, seleccione una fecha para continuar.")
-        //     return;
-        // }
+        if (currentStep === STEPS.DATE && !formData.visitDate) {
+            setNotification({
+                title: "Error...",
+                message: "Por favor, seleccione una fecha para continuar.",
+                type: "alert",
+                time: 2000,
+            });
+            setShowNotification(true)
+            return;
+        }
 
-        // if (currentStep === STEPS.TICKETS) {
-        //     const hasIncompleteTicket = formData.tickets.some(
-        //         (ticket) => !ticket.name.trim() || !ticket.age || !ticket.type
-        //     );
+        if (currentStep === STEPS.TICKETS) {
+            const hasIncompleteTicket = formData.tickets.some(
+                (ticket) => !ticket.name.trim() || !ticket.age || !ticket.type
+            );
 
-        //     if (hasIncompleteTicket) {
-        //         // Notificacion de que tiene datos de la entrada incompleto
-        //         console.log("Por favor, complete la información para todas las entradas.")
-        //         return;
-        //     } else {
-        //         // Notificacion para confirmar que los datos de las entradas fueron completados correctamente
-        //         console.log("Perfecto! ha completado todos los campos correctamente.")
-        //         return;
-        //     }
-        // }
+            if (hasIncompleteTicket) {
+                setNotification({
+                    title: "Campos incompletos",
+                    message: "Por favor, complete la información para todas las entradas.",
+                    type: "fail",
+                    time: 2000,
+                });
+                setShowNotification(true);
+                return;
+            } else {
+                setNotification({
+                    title: "Datos completos",
+                    message: "Perfecto! ha completado todos los campos correctamente.",
+                    type: "success",
+                    time: 2000,
+                });
+                setShowNotification(true);
+            }
+        }
         setCurrentStep((prev) => prev + 1);
     };
 
@@ -74,11 +100,16 @@ const Shop = () => {
     const handleConfirmation = async () => {
         if (submissionStatus !== 'waiting') return;
 
-        // if (currentStep === STEPS.PAYMENT && !formData.paymentMethod) {
-        //     // Notificacion de que debe seleccionar un metodo de pago
-        //     console.log("Por favor, seleccione un metodo de pago para continuar.")
-        //     return;
-        // }
+        if (currentStep === STEPS.PAYMENT && !formData.paymentMethod) {
+            setNotification({
+                title: "Error...",
+                message: "Por favor, seleccione un metodo de pago para continuar.",
+                type: "alert",
+                time: 2000,
+            });
+            setShowNotification(true)
+            return;
+        }
 
         setSubmissionStatus('submitting');
 
@@ -100,14 +131,18 @@ const Shop = () => {
                 localStorage.setItem('purchaseShopStep', currentStep);
                 localStorage.setItem('purchaseFormData', JSON.stringify(formData))
                 setTimeout(() => {
-                    console.log("Redireccionando a mercado pago")
                     navigate(`/mercadopago?total_price=${purchaseResponse.detalle_compra.precio_total}`);
                 }, 3000);
 
             } else {
                 setTimeout(() => {
-                    // Notificacion de registro exitoso
-                    console.log("¡Tu pedido fue registrado con éxito! Revisa tu correo para ver los detalles y paga en la boletería para poder ingresar.")
+                    setNotification({
+                        title: "¡Reserva Exitosa!",
+                        message: "¡Tu pedido fue registrado con éxito! Revisa tu correo para ver los detalles y paga en la boletería para poder ingresar.",
+                        type: "success",
+                        time: 10000,
+                    });
+                    setShowNotification(true);
 
                     setSubmissionStatus('success');
 
@@ -119,25 +154,81 @@ const Shop = () => {
             }
         } catch (error) {
             console.error("Error al registrar la compra:", error);
-            // Notificacion de error
+            setNotification({
+                title: "Error en el Pedido",
+                message: "No pudimos registrar tu pedido. Intenta de nuevo.",
+                type: "fail",
+                time: 5000,
+            });
+            setShowNotification(true);
             setSubmissionStatus('waiting');
         }
     }
+
+    const handleDateChange = (selectedDate) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (!selectedDate) {
+            updateFormData({ visitDate: '' });
+            return;
+        }
+
+        if (selectedDate < today) {
+            setNotification({
+                title: "Fecha inválida",
+                message: "No puedes seleccionar una fecha anterior a la de hoy.",
+                type: "fail",
+                time: 2000,
+            });
+            setShowNotification(true);
+            return;
+        }
+        if (selectedDate.getDay() === 0) {
+            setNotification({
+                title: "Parque cerrado",
+                message: "El parque se encuentra cerrado los días domingo.",
+                type: "fail",
+                time: 2000,
+            });
+            setShowNotification(true);
+            return;
+        }
+
+        setNotification({
+            title: "Fecha Valida",
+            message: "Perfecto! Ha seleccionado una fecha disponible.",
+            type: "success",
+            time: 2000,
+        });
+        setShowNotification(true);
+
+        updateFormData({ visitDate: selectedDate });
+    };
     
     const renderStepContent = () => {
         switch (currentStep) {
             case STEPS.DATE:
                 return (
-                    // Aqui va ContentCard con el DateSelector
-                    <div>
-                        Seleccionar una fecha
-                    </div>
+                    <ContentCard
+                        tittle={"Seleccione la fecha de visita"}
+                        description={"Estamos abiertos de Lunes a Sábado de 9:00 a 18:00 hs"}
+                        content={
+                            <DateSelector
+                                formData={formData}
+                                onDateChange={handleDateChange}
+                            />
+                        }
+                    />
                 );
             case STEPS.TICKETS:
                 return (
-                    // Aqui va el ContentCard y el TicketList
-                    <div>
-                        Lista de entradas
+                    <div className='overflow-y-auto'>
+                        <ContentCard
+                            tittle={"Complete la información para cada entrada"}
+                            description={"Esta información es importante para el ingreso al parque."}
+                        />
+                        {/* Listado de Entradas */}
                     </div>
                 );
             case STEPS.PAYMENT:
@@ -153,9 +244,9 @@ const Shop = () => {
     };
     
     return (
-        // FALTA AGREGAR "${getBackgroundClass()}" a este div
+        // ${getBackgroundClass()}
         <div className={`bg-custom-green h-full flex flex-col items-center bg-cover bg-center bg-no-repeat`}>
-            {/* {showNotification &&
+            {showNotification &&
                 <Notification
                     title={notification.title}
                     message={notification.message}
@@ -163,7 +254,7 @@ const Shop = () => {
                     time={notification.time}
                     setShowNotification={setShowNotification}
                 />
-            } */}
+            }
 
             <main className='min-h-[80dvh] flex-grow p-5 '>
                 {renderStepContent()}
@@ -181,7 +272,7 @@ const Shop = () => {
                 />
             )}
         </div>
-    )
-}
+    );
+};
 
 export default Shop;
