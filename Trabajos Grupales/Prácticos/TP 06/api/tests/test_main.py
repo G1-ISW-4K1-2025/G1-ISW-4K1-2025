@@ -139,6 +139,126 @@ def test_validar_compra_efectivo():
     assert compra.pago.estado_pago == "PAGO_A_REALIZAR_EN_CAJA"
     assert compra.pago.codigo_pago == 0
 
+def test_post_validar_compra_entradas_falta_dato_forma_pago():
+    compra_data_incompleta = {
+                    "entradas": [
+                        {
+                            "edad_visitante": 30,
+                            "tipo_pase": "VIP",
+                            "precio": 100.0
+                        }
+                    ],
+                    "fecha_visita": "2024-12-15",
+                    "id_usuario": 1
+                }
+
+    resp = client.post("/validar-compra-entradas", json=compra_data_incompleta)
+    resp_json = resp.json()
+    assert resp_json["status_code"] == 400
+    assert resp_json["message"] == "Error: Debe especificar la forma de pago"
+    assert resp_json["detalle_compra"] is None
+    assert resp_json["envio_de_mail"] == "NO_ENVIADO"
+def test_post_validar_compra_entradas_falta_dato_entradas():
+    compra_data_incompleta = {
+                    "forma_pago": "tarjeta",
+                    "fecha_visita": "2024-12-15",
+                    "id_usuario": 1
+                }
+
+    resp = client.post("/validar-compra-entradas", json=compra_data_incompleta)
+    resp_json = resp.json()
+    assert resp_json["status_code"] == 400
+    assert resp_json["message"] == "Error: Debe especificar las entradas a comprar"
+    assert resp_json["detalle_compra"] is None
+    assert resp_json["envio_de_mail"] == "NO_ENVIADO"
+def test_post_validar_compra_entradas_falta_dato_id_usuario():
+    compra_data_incompleta = {
+                    "forma_pago": "tarjeta",
+                    "entradas": [
+                        {
+                            "edad_visitante": 30,
+                            "tipo_pase": "VIP",
+                            "precio": 100.0
+                        }
+                    ],  
+                    "fecha_visita": "2024-12-15"
+                }
+
+    resp = client.post("/validar-compra-entradas", json=compra_data_incompleta)
+    resp_json = resp.json()
+    assert resp_json["status_code"] == 400
+    assert resp_json["message"] == "Error: Debe especificar el ID del usuario"
+    assert resp_json["detalle_compra"] is None
+    assert resp_json["envio_de_mail"] == "NO_ENVIADO"
+def test_post_validar_compra_entradas_falta_dato_fecha_visita():
+    compra_data_incompleta = {
+                    "forma_pago": "tarjeta",
+                    "entradas": [
+                        {
+                            "edad_visitante": 30,
+                            "tipo_pase": "VIP",
+                            "precio": 100.0
+                        }
+                    ],
+                    "id_usuario": 1
+                }
+    resp = client.post("/validar-compra-entradas", json=compra_data_incompleta)
+    resp_json = resp.json()
+    assert resp_json["status_code"] == 400
+    assert resp_json["message"] == "Error: Debe especificar la fecha de visita"
+    assert resp_json["detalle_compra"] is None
+    assert resp_json["envio_de_mail"] == "NO_ENVIADO"
+
+def test_validar_forma_pago_valida():
+    assert service._validar_forma_pago("Efectivo") == "efectivo"
+    assert service._validar_forma_pago("Tarjeta") == "tarjeta"
+def test_validar_forma_pago_invalida():
+    with pytest.raises(ValidacionError) as excinfo:
+        service._validar_forma_pago("Cheque")
+    assert str(excinfo.value) == "Debe seleccionar una forma de pago válida: efectivo, tarjeta"
+
+def test_validar_fecha_visita_dia_valido():
+    # Buscar el próximo día válido (lunes a sábado)
+    fecha_valida = devolver_fecha_dia_abierto()
+    assert service._validar_fecha_visita(str(fecha_valida)) == date.fromisoformat(str(fecha_valida))
+def test_validar_fecha_visita_pasada():
+    fecha_pasada = (date.today() - timedelta(days=1))
+    with pytest.raises(ValidacionError) as excinfo:
+        service._validar_fecha_visita(str(fecha_pasada))
+    assert str(excinfo.value) == "La fecha de visita no puede ser anterior a hoy"
+def test_validar_fecha_visita_dia_cerrado():
+    # Buscar el próximo domingo (día cerrado)
+    dias_abiertos = service.dias_abierto
+    # dias_abiertos = [0,1,2,3,4,5,6]  # Lunes a Sábado
+
+    dias_adelante = 1
+    if len(dias_abiertos) == 7:
+        pytest.skip("No hay días cerrados configurados en el servicio.")
+    while True:
+        fecha_futura = date.today() + timedelta(days=dias_adelante)
+        if fecha_futura.weekday() not in dias_abiertos:  # Domingo
+            break
+        dias_adelante += 1
+    
+    fecha_cerrada = fecha_futura
+    with pytest.raises(ValidacionError) as excinfo:
+        service._validar_fecha_visita(str(fecha_cerrada))
+    assert str(excinfo.value) == "El parque está cerrado en la fecha seleccionada"
+ 
+def test_validar_cantidad_entradas_valida():
+    assert service._validar_cantidad_entradas(5) is True
+def test_validar_cantidad_entradas_cero():
+    cant_min_entradas = service.min_entradas
+    with pytest.raises(ValidacionError) as excinfo:
+        service._validar_cantidad_entradas(0)
+    assert str(excinfo.value) == f"Debe solicitar al menos {cant_min_entradas} entrada"
+def test_validar_cantidad_entradas_exceso():
+
+    with pytest.raises(ValidacionError) as excinfo:
+        service._validar_cantidad_entradas(11)
+    assert str(excinfo.value) == "La cantidad de entradas no puede ser mayor a 10"
+
+
 
 """
 # Compra exitosa con datos válidos
