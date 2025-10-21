@@ -248,6 +248,41 @@ def test_validar_fecha_visita_dia_cerrado():
         service._validar_fecha_visita(str(fecha_cerrada))
     assert str(excinfo.value) == "El parque está cerrado en la fecha seleccionada"
 
+def test_validar_cantidad_entradas_valida():
+    assert service._validar_cantidad_entradas(5) is True
+def test_validar_cantidad_entradas_cero():
+    cant_min_entradas = service.min_entradas
+    with pytest.raises(ValidacionError) as excinfo:
+        service._validar_cantidad_entradas(0)
+    assert str(excinfo.value) == f"Debe solicitar al menos {cant_min_entradas} entrada"
+def test_validar_cantidad_entradas_exceso():
+
+    with pytest.raises(ValidacionError) as excinfo:
+        service._validar_cantidad_entradas(11)
+    assert str(excinfo.value) == "La cantidad de entradas no puede ser mayor a 10"
+
+def test_validar_entrada_valida():
+    entrada_valida = Entrada(fecha_visita=str(devolver_fecha_dia_abierto()), edad_visitante=25, tipo_pase="VIP", precio=2000.0)
+    assert service._validar_entrada_completa(entrada_valida) is True
+def test_validar_entrada_edad_negativa():
+    entrada_invalida = Entrada(fecha_visita=str(devolver_fecha_dia_abierto()), edad_visitante=-5, tipo_pase="Regular", precio=1000.0)
+    with pytest.raises(ValidacionError) as excinfo:
+        service._validar_entrada_completa(entrada_invalida)
+    assert str(excinfo.value) == "La edad del visitante no puede ser negativa"
+def test_validar_entrada_tipo_pase_invalido():
+    entrada_invalida = Entrada(fecha_visita=str(devolver_fecha_dia_abierto()), edad_visitante=30, tipo_pase="SuperVIP", precio=150.0)
+    with pytest.raises(ValidacionError) as excinfo:
+        service._validar_entrada_completa(entrada_invalida)
+    assert str(excinfo.value) == "El tipo de pase debe ser uno de: VIP, Regular"
+def test_validar_entrada_precio_negativo():
+    entrada_invalida = Entrada(fecha_visita=str(devolver_fecha_dia_abierto()), edad_visitante=20, tipo_pase="Regular", precio=-10.0)
+    with pytest.raises(ValidacionError) as excinfo:
+        service._validar_entrada_completa(entrada_invalida)
+    assert str(excinfo.value) == "El precio de la entrada no puede ser negativo"
+
+
+
+
 
 """
 # Compra exitosa con datos válidos
