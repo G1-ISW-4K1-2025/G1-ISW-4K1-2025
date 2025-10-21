@@ -51,3 +51,7 @@ class RepositorioCompraEntradas:
         """Obtiene un usuario por su ID desde la base de datos."""
         pass
 
+    def crear_compra(self, compra: Compra):
+        """Crea una nueva compra en la base de datos."""
+        pass
+

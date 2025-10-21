@@ -1,7 +1,12 @@
 from datetime import date
+import random
+from typing import List, Dict, Tuple
+from .compra import Compra 
 from .entrada import Entrada
 from .validacionError import ValidacionError
+from .pagoError import PagoError
 from .usuario import Usuario
+from .pago import Pago
 from .repositorioCompraEntradas import RepositorioCompraEntradas
 
 class ServicioCompraEntradas:
@@ -17,6 +22,38 @@ class ServicioCompraEntradas:
         self.min_entradas = 1
         self.formas_pago_validas = ["efectivo", "tarjeta"]
         self.tipos_pase_validos = ["VIP", "Regular"]
+
+
+    def validar_compra(self, forma_pago: str, entradas: List[Entrada], usuario_id: int) -> Tuple[Compra, int, date, str]:
+        """
+        Valida y procesa una compra completa.
+        Retorna: (compra, cantidad_entradas, fecha_compra, estado_envio_mail)
+        """
+        try:
+            # Validaciones de entrada
+            forma_pago_validada = self._validar_forma_pago(forma_pago)
+            usuario = self._validar_usuario_registrado(usuario_id)
+            self._validar_cantidad_entradas(len(entradas))
+            
+            # Validar cada entrada individualmente
+            entradas_validadas = []
+            for entrada in entradas:
+                if not self._validar_entrada_completa(entrada):
+                    raise ValidacionError("Entrada inválida")
+                entradas_validadas.append(entrada)
+            
+            # Crear la compra
+            compra = self._crear_compra_con_pago(entradas_validadas, usuario, forma_pago_validada)
+            
+            # Envío de confirmación según forma de pago
+            estado_envio_mail = self._procesar_confirmacion_inicial(compra, forma_pago_validada)
+            
+            return compra, len(compra.entradas), compra.fecha, estado_envio_mail
+            
+        except (ValidacionError, PagoError) as e:
+            raise e
+        except Exception as e:
+            raise ValidacionError(f"Error inesperado durante la validación: {str(e)}")
 
     def _validar_forma_pago(self, forma_pago: str) -> str:
         """Valida y normaliza la forma de pago."""
@@ -68,6 +105,7 @@ class ServicioCompraEntradas:
             raise ValidacionError(f"Error al validar usuario: {str(e)}")
 
     def _validar_entrada_completa(self, entrada: Entrada) -> bool:
+
         """Valida todos los campos de una entrada."""
         if not entrada:
             raise ValidacionError("La entrada no puede ser nula")
@@ -95,3 +133,29 @@ class ServicioCompraEntradas:
             self._validar_fecha_visita(entrada.fecha_visita)
 
         return True
+    
+
+    def _crear_compra_con_pago(self, entradas: List[Entrada], usuario: Usuario, forma_pago: str) -> Compra:
+        """Crea la compra con el pago correspondiente."""
+        compra = Compra(entradas, usuario)
+        
+        if forma_pago == "efectivo":
+            compra.pago = Pago(forma_pago, "PAGO_A_REALIZAR_EN_CAJA", 0, compra.precio_total) 
+        elif forma_pago == "tarjeta":
+            compra.pago = Pago(forma_pago, "PAGO_PENDIENTE_POR_MERCADO_PAGO", 0, compra.precio_total)
+        
+        try:
+            return self.repositorio.crear_compra(compra)
+        except Exception as e:
+            raise ValidacionError(f"Error al crear la compra: {str(e)}")
+        
+    def _procesar_confirmacion_inicial(self, compra: Compra, forma_pago: str) -> str:
+        """Procesa la confirmación inicial según la forma de pago."""
+        if forma_pago == "efectivo":
+            return self._enviar_mail_confirmacion_efectivo(compra)
+        return "PENDIENTE"
+
+    def _enviar_mail_confirmacion_efectivo(self, compra: Compra) -> str:
+        """Envía confirmación para pago en efectivo."""
+        print(f"Enviando mail de confirmación de pago en efectivo para la compra {compra.id_compra}")
+        return "ENVIADO"
