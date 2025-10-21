@@ -1,5 +1,5 @@
 from datetime import date
-import sqlite3 
+import sqlite3
 import os
 from contextlib import contextmanager
 
@@ -16,7 +16,7 @@ from .entrada import Entrada
 class RepositorioCompraEntradas:
     def __init__(self):
         self.path_db = path_db
-        self._verificar_conexion()__
+        self._verificar_conexion()
 
     def _verificar_conexion(self):
         """Método privado para verificar la conexión a la BD"""
