@@ -1,14 +1,9 @@
-import React from "react";
-
-const App = () => {
-  return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <h1 className="font-montserrat text-4xl text-blue-600">
-        Frontend
-      </h1>
-    </div>
-  );
-
+const Home = () => {
+    return(
+        <div className="h-screen bg-zinc-50">
+            Home
+        </div>
+    )
 }
 
-export default App;
+export default Home;
