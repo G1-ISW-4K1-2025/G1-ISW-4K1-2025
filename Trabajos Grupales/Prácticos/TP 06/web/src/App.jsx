@@ -1,9 +1,53 @@
-const Home = () => {
-    return(
-        <div className="h-screen bg-zinc-50">
-            Home
-        </div>
-    )
+import { createHashRouter, RouterProvider } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { checkApiStatus } from "services/api.service";
+import Home from "./components/pages/Home";
+
+const router = createHashRouter([
+  {
+    element: <Home/>,
+    children: [
+      { path: "/", element: <></>, },
+      { path: "/shop", element: <></>, },
+      { path: "/mercadopago", element: <></>, },
+    ]
+  }
+]);
+
+const App = () => {
+  const [apiError, setApiError] = useState(null);
+
+  useEffect(() => {
+    const checkApi = async () => {
+      try {
+        const data = await checkApiStatus(); 
+        console.log("Respuesta de la API:", data.message);
+        setApiError(null);
+      } catch (error) {
+        console.error("Error al conectar con la API:", error);
+        setApiError(error.message);
+      }
+    };
+
+    checkApi();
+  }, []);
+ 
+
+  if (apiError) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <h1>Error de conexión</h1>
+        <p>No se pudo conectar con el servidor (EcoPark). Intenta de nuevo más tarde.</p>
+        <pre>{apiError}</pre>
+      </div>
+    );
+  }
+  
+  return (
+    <>
+      <RouterProvider router={router} />
+    </>
+  );
 }
 
-export default Home;
+export default App;
