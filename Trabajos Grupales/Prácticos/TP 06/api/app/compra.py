@@ -1,6 +1,7 @@
 from datetime import date
 from typing import List, Optional
 
+from .pago import Pago
 from .entrada import Entrada
 from .validacionError import ValidacionError
 from .usuario import Usuario
