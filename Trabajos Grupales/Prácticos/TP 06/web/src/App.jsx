@@ -2,13 +2,15 @@ import { createHashRouter, RouterProvider } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { checkApiStatus } from "services/api.service";
 import Home from "./components/pages/Home";
+import Layout from "./components/common/layout/Layout";
+import Shop from "./components/pages/Shop";
 
 const router = createHashRouter([
   {
-    element: <Home/>,
+    element: <Layout />,
     children: [
-      { path: "/", element: <></>, },
-      { path: "/shop", element: <></>, },
+      { path: "/", element: <Home />, },
+      { path: "/shop", element: <Shop />, },
       { path: "/mercadopago", element: <></>, },
     ]
   }
