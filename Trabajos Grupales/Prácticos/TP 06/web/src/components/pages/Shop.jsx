@@ -374,9 +374,21 @@ const Shop = () => {
         }
     };
     
+    const getBackgroundClass = () => {
+        switch (currentStep) {
+            case STEPS.DATE:
+                return 'bg-fondo1';
+            case STEPS.TICKETS:
+                return 'bg-fondo2';
+            case STEPS.PAYMENT:
+                return 'bg-fondo3';
+            default:
+                return 'bg-fondo1';
+        }
+    };
+
     return (
-        // ${getBackgroundClass()}
-        <div className={`bg-custom-green h-full flex flex-col items-center bg-cover bg-center bg-no-repeat`}>
+        <div className={`bg-custom-green h-full flex flex-col items-center ${getBackgroundClass()} bg-cover bg-center bg-no-repeat`}>
             {showNotification &&
                 <Notification
                     title={notification.title}
