@@ -4,6 +4,7 @@ import { checkApiStatus } from "services/api.service";
 import Home from "./components/pages/Home";
 import Layout from "./components/common/layout/Layout";
 import Shop from "./components/pages/Shop";
+import MercadoPagoSimulation from "./components/simulation/MercadoPagoSimulation";
 
 const router = createHashRouter([
   {
@@ -11,7 +12,7 @@ const router = createHashRouter([
     children: [
       { path: "/", element: <Home />, },
       { path: "/shop", element: <Shop />, },
-      { path: "/mercadopago", element: <></>, },
+      { path: "/mercadopago", element: <MercadoPagoSimulation />, },
     ]
   }
 ]);
