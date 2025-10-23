@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .servicioCompraEntradas import ServicioCompraEntradas
 from .entrada import Entrada
 from .validacionError import ValidacionError
+from .pagoError import PagoError
 
 app = FastAPI(title="Api para TP06-TDD")
 
@@ -69,5 +70,27 @@ def validar_compra_entradas(compra: dict):
         }
     except ValidacionError as ve:
         return error_response(str(ve))
+    except Exception as e:
+        return {"status_code": 500, "message": "Error interno del servidor", "detalle_compra": None, "cantidad_entradas": 0, "fecha_compra": None, "envio_de_mail": "NO_ENVIADO"}
+
+
+@app.post("/procesar-pago/{compra_id}")
+def procesar_pago(compra_id: int):
+    try:
+        compra, cantidad_entradas, fecha_compra, estado_envio_de_mail = app.service.procesar_pago_tarjeta(compra_id)
+        
+        # Usar el método generar_resumen_compra del servicio
+        detalle_compra = app.service.generar_resumen_compra(compra)
+        
+        return {
+            "status_code": 200, 
+            "message": "Pago procesado con éxito", 
+            "detalle_compra": detalle_compra, 
+            "cantidad_entradas": cantidad_entradas, 
+            "fecha_compra": fecha_compra.isoformat() if fecha_compra else None, 
+            "envio_de_mail": estado_envio_de_mail
+        }
+    except PagoError as pe:
+        return {"status_code": 400, "message": f"Error: {str(pe)}", "detalle_compra": None, "cantidad_entradas": 0, "fecha_compra": None, "envio_de_mail": "NO_ENVIADO"}
     except Exception as e:
         return {"status_code": 500, "message": "Error interno del servidor", "detalle_compra": None, "cantidad_entradas": 0, "fecha_compra": None, "envio_de_mail": "NO_ENVIADO"}
