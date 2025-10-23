@@ -160,3 +160,89 @@ class RepositorioCompraEntradas:
         except sqlite3.Error as e:
             print(f"Error al crear compra: {e}")
             raise
+
+    def obtener_compra_por_id(self, id_compra: int):
+        try:
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                
+                # Query optimizada con JOINs
+                cursor.execute('''
+                    SELECT 
+                        c.id_compra, c.fecha, c.precio_total,
+                        u.id_usuario, u.nombre, u.apellido, u.mail, u.contraseña,
+                        p.id_pago, p.forma_pago, p.estado_pago, p.codigo_pago, p.monto
+                    FROM Compra c
+                    JOIN Usuario u ON c.id_usuario = u.id_usuario
+                    JOIN Pago p ON c.id_pago = p.id_pago
+                    WHERE c.id_compra = ?
+                ''', (id_compra,))
+                
+                row = cursor.fetchone()
+                if not row:
+                    return None
+                
+                # Crear objetos con los datos obtenidos
+                usuario = Usuario(
+                    nombre=row[4],
+                    apellido=row[5],
+                    mail=row[6],
+                    contraseña=row[7]
+                )
+                usuario.id_usuario = row[3]
+                
+                pago = Pago(
+                    forma_pago=row[9],
+                    estado_pago=row[10],
+                    codigo_pago=row[11],
+                    monto=row[12]
+                )
+                pago.id_pago = row[8]
+                
+                # Obtener entradas
+                cursor.execute('''
+                    SELECT id_entrada, fecha_visita, tipo_pase, edad_visitante, precio
+                    FROM Entrada
+                    WHERE id_compra = ?
+                ''', (id_compra,))
+                
+                entradas = []
+                for entrada_row in cursor.fetchall():
+                    entrada = Entrada(
+                        fecha_visita=entrada_row[1],
+                        tipo_pase=entrada_row[2],
+                        edad_visitante=entrada_row[3],
+                        precio=entrada_row[4]
+                    )
+                    entrada.id_entrada = entrada_row[0]
+                    entradas.append(entrada)
+                
+                compra = Compra(
+                    entradas=entradas,
+                    usuario=usuario,
+                    pago=pago
+                )
+                compra.id_compra = row[0]
+                compra.fecha = date.fromisoformat(row[1])
+                compra.precio_total = row[2]
+                
+                return compra
+        except sqlite3.Error as e:
+            print(f"Error al obtener compra: {e}")
+            raise
+
+    def actualizar_pago_compra(self, compra: Compra):
+        try:
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                    UPDATE Pago
+                    SET forma_pago = ?, estado_pago = ?, codigo_pago = ?, monto = ?
+                    WHERE id_pago = ?
+                ''', (compra.pago.forma_pago, compra.pago.estado_pago, compra.pago.codigo_pago, compra.pago.monto, compra.pago.id_pago))
+                conn.commit()
+                return compra
+        except sqlite3.Error as e:
+            print(f"Error al actualizar pago de compra: {e}")
+            raise
+        
