@@ -46,7 +46,7 @@ class ServicioCompraEntradas:
             compra = self._crear_compra_con_pago(entradas_validadas, usuario, forma_pago_validada)
             
             # Envío de confirmación según forma de pago
-            estado_envio_mail = self._procesar_confirmacion_inicial(compra, forma_pago_validada)
+            estado_envio_mail = self._enviar_mail_si_es_efectivo(compra, forma_pago_validada)
             
             return compra, len(compra.entradas), compra.fecha, estado_envio_mail
             
@@ -55,6 +55,36 @@ class ServicioCompraEntradas:
         except Exception as e:
             raise ValidacionError(f"Error inesperado durante la validación: {str(e)}")
         
+    def procesar_pago_tarjeta(self, id_compra: int) -> Tuple[Compra, int, date, str]:
+        """
+        Procesa el pago con tarjeta para una compra existente.
+        Retorna: (compra, cantidad_entradas, fecha_compra, estado_envio_mail)
+        """
+        try:
+            compra = self._obtener_y_validar_compra_para_pago(id_compra)
+            
+            # Simular procesamiento de pago
+            resultado_pago = self._simular_pago_tarjeta()
+            
+            if not resultado_pago:
+                compra.pago.estado_pago = "FALLO_EN_PAGO_POR_TARJETA_EN_MERCADO_PAGO"
+                self.repositorio.actualizar_pago_compra(compra)
+                raise PagoError("El pago con tarjeta ha fallado")
+            
+            # Actualizar estado exitoso
+            compra.pago.estado_pago = "PAGO_EXITOSO_POR_TARJETA_EN_MERCADO_PAGO"
+            compra.pago.codigo_pago = self._generar_codigo_pago()
+            compra = self.repositorio.actualizar_pago_compra(compra)
+            
+            estado_envio_mail = self._enviar_mail_si_es_tarjeta(compra)
+            
+            return compra, len(compra.entradas), compra.fecha, estado_envio_mail
+            
+        except (PagoError, ValidacionError) as e:
+            raise e
+        except Exception as e:
+            raise PagoError(f"Error inesperado durante el procesamiento del pago: {str(e)}")
+      
     def generar_resumen_compra(self, compra: Compra) -> Dict:
         """
         Genera un resumen detallado de la compra.
@@ -167,7 +197,6 @@ class ServicioCompraEntradas:
 
         return True
     
-
     def _crear_compra_con_pago(self, entradas: List[Entrada], usuario: Usuario, forma_pago: str) -> Compra:
         """Crea la compra con el pago correspondiente."""
         compra = Compra(entradas, usuario)
@@ -182,13 +211,46 @@ class ServicioCompraEntradas:
         except Exception as e:
             raise ValidacionError(f"Error al crear la compra: {str(e)}")
         
-    def _procesar_confirmacion_inicial(self, compra: Compra, forma_pago: str) -> str:
+    def _obtener_y_validar_compra_para_pago(self, id_compra: int) -> Compra:
+        """Obtiene y valida una compra para procesamiento de pago."""
+        if not id_compra or id_compra <= 0:
+            raise PagoError("ID de compra inválido")
+        
+        try:
+            compra = self.repositorio.obtener_compra_por_id(id_compra)
+            if not compra:
+                raise PagoError("La compra no existe")
+            
+            if compra.pago.forma_pago != "tarjeta":
+                raise PagoError("La forma de pago de la compra no es tarjeta")
+            
+            if compra.pago.estado_pago == "PAGO_EXITOSO_POR_TARJETA_EN_MERCADO_PAGO":
+                raise PagoError("El pago de la compra ya se realizó por Mercado Pago")
+            
+            return compra
+        except PagoError:
+            raise
+        except Exception as e:
+            raise PagoError(f"Error al obtener la compra: {str(e)}")
+
+    def _simular_pago_tarjeta(self) -> bool:
+        """Simula el procesamiento del pago con tarjeta."""
+        # Simulamos un 1% de probabilidad de fallo
+        return random.random() > 0.01
+
+    def _generar_codigo_pago(self) -> int:
+        """Genera un código de pago único."""
+        return random.randint(100000, 999999)
+           
+    def _enviar_mail_si_es_efectivo(self, compra: Compra, forma_pago: str) -> str:
         """Procesa la confirmación inicial según la forma de pago."""
         if forma_pago == "efectivo":
-            return self._enviar_mail_confirmacion_efectivo(compra)
+            """Envía confirmación para pago en efectivo."""
+            print(f"Enviando mail de confirmación de pago en efectivo para la compra {compra.id_compra}")
+            return "ENVIADO"
         return "PENDIENTE"
 
-    def _enviar_mail_confirmacion_efectivo(self, compra: Compra) -> str:
-        """Envía confirmación para pago en efectivo."""
-        print(f"Enviando mail de confirmación de pago en efectivo para la compra {compra.id_compra}")
+    def _enviar_mail_si_es_tarjeta(self, compra: Compra) -> str:
+        """Envía confirmación para pago con tarjeta."""
+        print(f"Enviando mail de confirmación de pago con tarjeta para la compra {compra.id_compra}")
         return "ENVIADO"
