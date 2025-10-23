@@ -1,16 +1,17 @@
-from datetime import date
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from typing import List, Optional
-
 from .pago import Pago
 from .entrada import Entrada
 from .validacionError import ValidacionError
 from .usuario import Usuario
-
+ 
+zona_horaria_argentina = ZoneInfo("America/Argentina/Buenos_Aires")
 #Clase que representa una Compra
 class Compra:
     def __init__(self, entradas: List[Entrada], usuario: Usuario, pago: Optional[Pago] = None):
         self.id_compra = None  # ID asignado por la base de datos
-        self.fecha = date.today()
+        self.fecha = datetime.now(zona_horaria_argentina).date()
         self.entradas = entradas
         self.precio_total = self.calcular_precio_total()
         self.usuario = usuario

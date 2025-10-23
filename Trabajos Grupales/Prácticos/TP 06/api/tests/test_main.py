@@ -1,5 +1,6 @@
 import pytest
-from datetime import date, timedelta
+from datetime import datetime, timedelta, date
+from zoneinfo import ZoneInfo
 import sqlite3 
 import os
 
@@ -16,6 +17,7 @@ path_db = os.path.join(current_dir, '..', '..', 'db', 'test_app.db')
 client = TestClient(app)
 service = client.app.service
 service.repositorio.path_db = path_db
+zona_horaria_argentina = ZoneInfo("America/Argentina/Buenos_Aires")
 
 def init_test_db():
     conn =  sqlite3.connect(path_db)
@@ -63,7 +65,7 @@ def test_post_validar_compra_entradas_con_tarjeta():
     assert resp_json["status_code"] == 200
     assert resp_json["message"] == "Compra validada con éxito"
     assert "detalle_compra" in resp_json
-    assert resp_json["detalle_compra"]["fecha_compra"] == str(date.today())
+    assert resp_json["detalle_compra"]["fecha_compra"] == str(datetime.now(zona_horaria_argentina).date())
     assert resp_json["detalle_compra"]["precio_total"] == 4700.5 # 100 + 70 + (170 * 0.15) + 1250.5
     assert resp_json["detalle_compra"]["usuario"]["id"] == 1
     assert resp_json["detalle_compra"]["pago"]["forma_pago"] == "tarjeta"
@@ -102,7 +104,7 @@ def test_post_validar_compra_entradas_con_efectivo():
     assert resp_json["status_code"] == 200
     assert resp_json["message"] == "Compra validada con éxito"
     assert "detalle_compra" in resp_json
-    assert resp_json["detalle_compra"]["fecha_compra"] == str(date.today())
+    assert resp_json["detalle_compra"]["fecha_compra"] == str(datetime.now(zona_horaria_argentina).date())
     assert resp_json["detalle_compra"]["precio_total"] == 4700.5 # 100 + 70 + (170 * 0.15) + 1250.5
     assert resp_json["detalle_compra"]["usuario"]["id"] == 1
     assert resp_json["detalle_compra"]["pago"]["forma_pago"] == "efectivo"
@@ -119,7 +121,7 @@ def test_post_validar_compra_entradas_con_efectivo():
     assert resp_json["envio_de_mail"] == "ENVIADO"
 
 def devolver_fecha_dia_abierto():
-    fecha = date.today()
+    fecha = datetime.now(zona_horaria_argentina).date()
     while fecha.weekday() == 6:  # Mientras sea domingo
         fecha += timedelta(days=1)
     return fecha
@@ -136,7 +138,7 @@ def test_validar_compra_tarjeta():
 
     assert compra is not None
     assert cant_entradas == 2
-    assert fecha_compra == date.today()
+    assert fecha_compra == datetime.now(zona_horaria_argentina).date()
     assert estado_envio_mail == "PENDIENTE"
     assert compra.usuario.id_usuario == 1
     assert compra.pago is not None
@@ -156,7 +158,7 @@ def test_validar_compra_efectivo():
 
     assert compra is not None
     assert cant_entradas == 2
-    assert fecha_compra == date.today()
+    assert fecha_compra == datetime.now(zona_horaria_argentina).date()
     assert estado_envio_mail == "ENVIADO"
     assert compra.usuario.id_usuario == usuario_id
     assert compra.pago is not None
@@ -248,7 +250,7 @@ def test_validar_fecha_visita_dia_valido():
     fecha_valida = devolver_fecha_dia_abierto()
     assert service._validar_fecha_visita(str(fecha_valida)) == date.fromisoformat(str(fecha_valida))
 def test_validar_fecha_visita_pasada():
-    fecha_pasada = (date.today() - timedelta(days=1))
+    fecha_pasada = (datetime.now(zona_horaria_argentina).date() - timedelta(days=1))
     with pytest.raises(ValidacionError) as excinfo:
         service._validar_fecha_visita(str(fecha_pasada))
     assert str(excinfo.value) == "La fecha de visita no puede ser anterior a hoy"
@@ -261,7 +263,7 @@ def test_validar_fecha_visita_dia_cerrado():
     if len(dias_abiertos) == 7:
         pytest.skip("No hay días cerrados configurados en el servicio.")
     while True:
-        fecha_futura = date.today() + timedelta(days=dias_adelante)
+        fecha_futura = datetime.now(zona_horaria_argentina).date() + timedelta(days=dias_adelante)
         if fecha_futura.weekday() not in dias_abiertos:  # Domingo
             break
         dias_adelante += 1

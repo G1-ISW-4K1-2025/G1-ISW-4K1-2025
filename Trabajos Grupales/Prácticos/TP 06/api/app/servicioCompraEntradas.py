@@ -1,4 +1,5 @@
-from datetime import date
+from datetime import datetime, date
+from zoneinfo import ZoneInfo
 import random
 from typing import List, Dict, Tuple
 from .compra import Compra 
@@ -8,7 +9,7 @@ from .pagoError import PagoError
 from .usuario import Usuario
 from .pago import Pago
 from .repositorioCompraEntradas import RepositorioCompraEntradas
-
+zona_horaria_argentina = ZoneInfo("America/Argentina/Buenos_Aires")
 class ServicioCompraEntradas:
     """
     Servicio que implementa la funcionalidad de compra de entradas
@@ -136,7 +137,7 @@ class ServicioCompraEntradas:
         except ValueError:
             raise ValidacionError("Formato de fecha inválido. Use YYYY-MM-DD")
 
-        if fecha < date.today():
+        if fecha < datetime.now(zona_horaria_argentina).date():
             raise ValidacionError("La fecha de visita no puede ser anterior a hoy")
 
         if fecha.weekday() not in self.dias_abierto:
@@ -235,8 +236,8 @@ class ServicioCompraEntradas:
 
     def _simular_pago_tarjeta(self) -> bool:
         """Simula el procesamiento del pago con tarjeta."""
-        # Simulamos un 1% de probabilidad de fallo
-        return random.random() > 0.01
+        # return random.random() > 0
+        return True
 
     def _generar_codigo_pago(self) -> int:
         """Genera un código de pago único."""
