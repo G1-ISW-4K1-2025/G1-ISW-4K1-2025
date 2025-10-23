@@ -1,15 +1,38 @@
-from fastapi.testclient import TestClient
-from app.api import app
 import pytest
 from datetime import date, timedelta
+import sqlite3 
+import os
+
+from fastapi.testclient import TestClient
+from app.api import app
 from app.usuario import Usuario
 from app.entrada import Entrada
+from app.pago import Pago
 from app.validacionError import ValidacionError
 from app.compra import Compra
-from app.servicioCompraEntradas import ServicioCompraEntradas
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+path_db = os.path.join(current_dir, '..', '..', 'db', 'test_app.db')
 client = TestClient(app)
-service = ServicioCompraEntradas()
+service = client.app.service
+service.repositorio.path_db = path_db
+
+def init_test_db():
+    conn =  sqlite3.connect(path_db)
+    cursor = conn.cursor()
+    
+    # Eliminar datos existentes
+    cursor.execute('DELETE FROM Entrada WHERE id_entrada > 2')
+    cursor.execute('DELETE FROM Compra WHERE id_compra > 1')
+    cursor.execute('DELETE FROM Pago WHERE id_pago > 1')
+    cursor.execute('DELETE FROM Usuario WHERE id_usuario > 1')
+    cursor.execute("DELETE FROM sqlite_sequence WHERE name IN ('Entrada', 'Pago', 'Compra', 'Usuario');")
+    # Guardar cambios
+    conn.commit()
+    conn.close()
+
+init_test_db()
+# ------------------------------------------------------------------------
 
 def test_read_root():
     resp = client.get("/")
@@ -368,3 +391,53 @@ def test_generar_codigo_pago():
     codigo = service._generar_codigo_pago()
     assert isinstance(codigo, int)
     assert 100000 <= codigo <= 999999
+
+def test_enviar_mail_si_es_efectivo_es_efectivo():
+    entradas = [
+        Entrada(str(devolver_fecha_dia_abierto()), edad_visitante=20, tipo_pase="Regular", precio=1000.0),
+        Entrada(str(devolver_fecha_dia_abierto()), edad_visitante=15, tipo_pase="VIP", precio=2000.0)
+    ]
+    entradas[0].id_entrada = 1
+    entradas[1].id_entrada = 2
+    usuario = Usuario("Juan", "Pérez", "juan@example.com", "123")
+    usuario.id_usuario = 1
+    pago = Pago("efectivo", "PAGO_A_REALIZAR_EN_CAJA", 0, 4700.5)
+    pago.id_pago = 1
+    compra = Compra(entradas, usuario, pago)
+    compra.id_compra = 1
+    resultado = service._enviar_mail_si_es_efectivo(compra, pago.forma_pago)
+    assert resultado == "ENVIADO"
+
+def test_enviar_mail_si_es_efectivo_es_tarjeta():
+    entradas = [
+        Entrada(str(devolver_fecha_dia_abierto()), edad_visitante=20, tipo_pase="Regular", precio=1000.0),
+        Entrada(str(devolver_fecha_dia_abierto()), edad_visitante=15, tipo_pase="VIP", precio=2000.0)
+    ]
+    entradas[0].id_entrada = 1
+    entradas[1].id_entrada = 2
+    usuario = Usuario("Juan", "Pérez", "juan@example.com", "123")
+    usuario.id_usuario = 1
+    pago = Pago("tarjeta", "PAGO_A_REALIZAR_EN_CAJA", 0, 4700.5)
+    pago.id_pago = 1
+    compra = Compra(entradas, usuario, pago)
+    compra.id_compra = 1
+    resultado = service._enviar_mail_si_es_efectivo(compra, pago.forma_pago)
+    assert resultado == "PENDIENTE"
+
+def test_enviar_mail_si_es_tarjeta():
+    entradas = [
+        Entrada(str(devolver_fecha_dia_abierto()), edad_visitante=20, tipo_pase="Regular", precio=1000.0),
+        Entrada(str(devolver_fecha_dia_abierto()), edad_visitante=15, tipo_pase="VIP", precio=2000.0)
+    ]
+    entradas[0].id_entrada = 1
+    entradas[1].id_entrada = 2
+    usuario = Usuario("Juan", "Pérez", "juan@example.com", "123")
+    usuario.id_usuario = 1
+    pago = Pago("tarjeta", "PAGO_A_REALIZAR_EN_CAJA", 0, 4700.5)
+    pago.id_pago = 1
+    compra = Compra(entradas, usuario, pago)
+    compra.id_compra = 1
+    resultado = service._enviar_mail_si_es_tarjeta(compra)
+    assert resultado == "ENVIADO"
+
+
