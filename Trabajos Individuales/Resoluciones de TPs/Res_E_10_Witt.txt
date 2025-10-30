@@ -1,0 +1,92 @@
+TP 10 Testing de caja negra
+
+comprar entradas (Grupo par)
+inscribirme a actividad (Grupo impar)
+
+2 - 
+
+30' para Clases de equivalencia de inscribirme a actividad
+
+
+CLASES DE EQUIVALENCIA PARA US "Inscribirme a actividad" EN EcoPark
+Actividades con cupos disponibles
+Actividades sin cupos disponibles
+
+
+(?) Tirolesa, safari, palestra, jardineria, son distintas clases porque requieren de diferenta vestimenta, y tienen salidas distintas
+
+________________________________________________________________________________________________________________________________
+Condición externa 		| Clases de equivalencia válidas 	|	Clases de equivalencia inválidas 		|
+--------------------------------|---------------------------------------|-------------------------------------------------------|
+TIPO				| 1. Tirolesa				| 5. Cualquier otra cosa				|
+				| 2. Safari				| 6. No seleccionaron actividad				|
+				| 3. Palestra				|							|
+				| 4. Jardineria				|							|
+--------------------------------|---------------------------------------|-------------------------------------------------------|
+HORARIO				| 7. Ingresa formato HH:MM dentro de	| 8. No selecciona un horario				|
+				|    rango de horarios disponibles,	| 9. Horario fuera de rango 				|
+				|    de 09:00hs a 18:00hs		| 10. Horario con formato invalid			|
+				|					| 11(agregado). NO es horario de actividad		|
+				|					| 12(agregado). Horario anterior al actual		|
+--------------------------------|---------------------------------------|-------------------------------------------------------|
+DISPONIBILIDAD			| 11. Numero entero mayor igual a 1 y 	| 12. Numero menor a uno 				|
+				      menor al cupo disponible		| 13. Numero mayor a cantidad de cupos disponibles	|
+				|					| 14. Numero con formato invalido			|
+				|					| 15. No ingresa numero					|
+--------------------------------|---------------------------------------|-------------------------------------------------------|
+NOMBRE				| 16. Cadena de caracteres alfabeticos	| 17. No ingresa nombre					|
+				|					| 18. Formato invalido					|
+--------------------------------|---------------------------------------|-------------------------------------------------------|
+DNI				| 19. Numero entero de 7 u 9 digitos 	| 20. Formato invalido					|
+				|     no negativo			| 21. No ingresa DNI					|
+--------------------------------|---------------------------------------|-------------------------------------------------------|
+EDAD				| 22. Numero entero mayor o igual a	| 25. No ingresa edad					|
+				|     8 años (Limitaciones de la	| 26. Ingresa edad menor a la que la actividad requiere	|
+				|      tecnica, ya que depende de	|							|
+				|      otras selecciones)		|							|
+				| 23. Ingresa numero entero mayor o	|							|
+				|     igual a 12			|							|
+				| 24. Ingresa numero etero mayor a 0	|							|
+				|     si es 'safari' o 'jardineria'	|							|
+--------------------------------|---------------------------------------|-------------------------------------------------------|
+TALLA VESTIMENTA		| 27. elige talle entre XS y XXL 	| 29. No selecciona y la actividad lo requiere		|
+				|     si la act lo requiere		|							|
+				| 28. No seleccionar talle si la	| 30. Ingresa talle invalido entre los disponibles	|
+				|     actividad no lo requiere		| 							|
+--------------------------------|---------------------------------------|-------------------------------------------------------|
+TERMINOS Y COND			| 31. Selecciona aceptar los terminos  	| 32. No acepta los terminos y condiciones		|
+				|     y condiciones			|							|
+________________________________|_______________________________________|_______________________________________________________|
+
+	
+ID del caso de prueba	| Prioridad  		| Nombre del caso de prueba	|
+			|(Alta, Baja o media)	|				|
+1.			| ALTA			| Prueba Tirolesa pasa		|
+ 
+
+
+Precondiciones 				| Pasos							| Resultados esperados  | 
+
+1. Usuario 'Santiago' logueado		| 1. 'santiago' selecciona inscribirse a actividad		|
+con permisos de visitante		| 2. 'Santiago'selecciona 'tirolesa'	
+2. Posee una entrada para el 25-10-25	|  
+3. Son las 13:00hs			| 4. Santiago selecciona fecha 25-10-25
+4. El dia es el 23-10-2025		| 5. SW muestra 5 cupos disponibles y
+5. Actividad tirolesa regi		|    solicita que ingrese cant de cupos a ocupar
+6. tirolesa tiene los sig.cup 		| 5. Santiago ingresa '1' 
+3 cupos 10:00				| 6. SW Solicita ingreso el nombre
+2 cupos 11:00 				| 7. Santiago ingresa 'Santi'
+10 cupos 12:00 				| 8. SW Solicita DNI
+7. talles disponibles			| 9. Santiago ingresa 44444444
+-xs, s, m, l, xl, xxl			| 10. 
+8. Edad minima configurada en 8 años	|
+9. terminos y condiciones cargados	|
+
+
+
+
+
+
+
+
+
