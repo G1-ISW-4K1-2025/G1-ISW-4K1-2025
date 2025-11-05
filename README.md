@@ -1,7 +1,7 @@
 # Repositorio - Ingeniería y Calidad de Software  
 **Grupo 1 - 4K1 - Año 2025**
 
-Este es el repositorio de la materia *Ingeniería y Calidad de Software* perteneciente al Grupo 1 del curso 4K1 del año 2025, dodne reúne el **material** utilizado en la materia junto con los **trabajos prácticos** desarrollados a lo largo de la cursada.  
+Este es el repositorio de la materia *Ingeniería y Calidad de Software* perteneciente al Grupo 1 del curso 4K1 del año 2025, donde reúne el **material** utilizado en la materia junto con los **trabajos prácticos** desarrollados a lo largo de la cursada.  
 
 ## Integrantes
 |Apellido y Nombre         | Legajo
@@ -37,13 +37,7 @@ Este es el repositorio de la materia *Ingeniería y Calidad de Software* pertene
       - TI 2
   - Trabajos Individuales
     - Notas de clase
-      - Nota_01_Ciclos de vida_Witt.txt
-      - Nota_02_Gestión de producto_Ceballos.pdf
     - Resoluciones de TPs
-      - Res_E_01_Estrada.pdf
-      - Res_E_02_Stanglino.txt
-      - Res_R_01_Ceballos.txt
-      - Res_R_01_Estrada.txt
 
 ## Listado de Ítems de Configuración
 | Nombre del Ítem de Configuración | Regla de Nombrado | Ubicación Física en el Repositorio
